@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<package version="0.0.1" uuid="shakehand-64f604">
+<package uuid="shakehand-64f604" version="0.0.1">
  <names>
   <name lang="en_US">ShakeHand</name>
  </names>
@@ -22,7 +22,7 @@
   </dialogContent>
  </contents>
  <services>
-  <service autorun="true" name="HandShakeService" execStart="/usr/bin/python HandShakeService.py"/>
+  <service name="HandShakeService" autorun="true" execStart="/usr/bin/python HandShakeService.py"/>
  </services>
  <executableFiles>
   <file path="HandShakeService.py"/>

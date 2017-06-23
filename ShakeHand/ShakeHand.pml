@@ -13,8 +13,8 @@
     </Resources>
     <Topics>
         <Topic name="ShakeHands_enu" src="ShakeHands/ShakeHands_enu.top" topicName="ShakeHands" language="en_US" />
-        <Topic name="ShakeHands_ged" src="ShakeHands/ShakeHands_ged.top" topicName="ShakeHands" language="de_DE" />
-        <Topic name="logic" src="ShakeHands/logic.top" topicName="" language="" />
+        <Topic name="HandShakeLogic_enu" src="ShakeHands/HandShakeLogic_enu.top" topicName="HandShakeLogic" language="en_US" />
+        <Topic name="HandShakeLogic_ged" src="ShakeHands/HandShakeLogic_ged.top" topicName="HandShakeLogic" language="en_US" />
     </Topics>
     <IgnoredPaths />
     <Translations auto-fill="en_US">
