@@ -8,12 +8,8 @@
     <% include ../partials/navbar %>
     <div class="container">
       <div class="row">
-        <div class="col-md-6">
-          <button id="buttonRed" type="button" class="btn btn-danger"></button>
-          <button id="buttonGreen" type="button" class="btn btn-success"></button>
-          <button id="buttonBlue" type="button" class="btn btn-primary"></button>
-        </div>
-        <div class="col-md-6">
+        <div class="col-md-12">
+          <h3>Alle LEDs:</h3>
           <a id="buttonAnimation" class="btn btn-raised btn-primary">
             Animation
             <div class="ripple-container"></div>
@@ -22,15 +18,16 @@
             Reset
             <div class="ripple-container"></div>
           </a>
+          <button id="buttonRed" type="button" class="btn btn-danger"></button>
+          <button id="buttonGreen" type="button" class="btn btn-success"></button>
+          <button id="buttonBlue" type="button" class="btn btn-primary"></button>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-12">
           <h3>Augen:</h3>
+          <a id="buttonEyeAnimation" class="btn btn-raised btn-primary">Animation<div class="ripple-container"></div></a>
           <button id="buttonEyesRed" type="button" class="btn btn-danger"></button>
           <button id="buttonEyesGreen" type="button" class="btn btn-success"></button>
           <button id="buttonEyesBlue" type="button" class="btn btn-primary"></button>
-        </div>
-        <div class="col-md-6">
-          <a id="buttonEyeAnimation" class="btn btn-raised btn-primary">Animation<div class="ripple-container"></div></a>
         </div>
     </div>
   </body>

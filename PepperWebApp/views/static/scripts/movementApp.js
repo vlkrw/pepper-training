@@ -12,12 +12,17 @@ function setupListeners(){
   $("#buttonTurnLeft").click(() => postToServer("turnleft"));
   $("#buttonMoveForward").click(() => postToServer("moveforward"));
   $("#buttonMoveBackward").click(() => postToServer("movebackward"));
+  $("#buttonShakeHand").click(() => postToServer("shakehand"));
+  $('#AutonomousAbilityToggle').change(()=>{
+    postToServer("autonomousability", $('#AutonomousAbilityToggle').is(':checked'));
+  });
 }
 
-function postToServer(direction){
+function postToServer(direction, value){
   var currentLocation = String(window.location);
   var data = {};
   data.movement = direction;
+  data.value = value;
 
   $.ajax({
      type: 'POST',

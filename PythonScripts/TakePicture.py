@@ -4,9 +4,11 @@ import json
 import requests
 import qi
 from PIL import Image
+from google.cloud import language, exceptions
 
 ENDPOINT_URL = 'https://vision.googleapis.com/v1/images:annotate'
-apikey = ""
+ENDPOINT_URL2 = 'https://language.googleapis.com/v1/documents:analyzeEntities'
+apikey = "AIzaSyBZOmhBYZpxcv9zBOLE7IRvP1tMhDJaD3M"
 
 class TextReader:
 
@@ -15,6 +17,7 @@ class TextReader:
         app.start()
 
         self.videoCapture = app.session.service("ALVideoDevice")
+        self.animatedSpeech = app.session.service("ALAnimatedSpeech")
 
     def make_image_data_list(self, image_filename):
         f = open(image_filename, 'rb')
@@ -55,19 +58,48 @@ class TextReader:
             return response.text
         else:
             responseText = response.json()['responses']
+
             if not len(responseText) == 0 and responseText[0].has_key('textAnnotations'):
                 t = responseText[0]['textAnnotations'][0]
-                return "Text: " + t['description']
+                return t['description']
             else:
-                return "No Text recognized!"
+                return ""
+
+    def getNameFromText(self, text):
+        language_client = language.Client()
+
+        # The text to analyze
+        document = language_client.document_from_text(text)
+
+        # Detects the sentiment of the text
+        try:
+            entity_response = document.analyze_entities()
+
+            for entity in entity_response.entities:
+                if entity.entity_type == "PERSON" and entity.salience > 0.08:
+                    print "Salience: " + str(entity.salience)
+                    return entity.name
+        except exceptions.BadRequest:
+            return ""
+
+        return ""
 
     def start(self):
         while True:
             startseconds = time.time()
             self.takePhoto()
-            print self.getText()
+            text = self.getText()
+            print "Recognized Text: " + text
+            if len(text) > 2:
+                name = self.getNameFromText(text)
+                if name == "":
+                    print "No name recognized!"
+                else:
+                    print "Recognized Name: " + name
+                    #self.animatedSpeech.say("Hello " + name)
+
             print str(time.time() - startseconds)
-            time.sleep(2)
+            time.sleep(3)
 
 
-TextReader().start()
+print TextReader().start()
