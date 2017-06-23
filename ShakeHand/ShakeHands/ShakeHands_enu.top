@@ -1,7 +1,7 @@
 topic: ~ShakeHands()
 language: enu
 
-include: logic.top
+include: ./HandShakeLogic_enu.top
 
 u:(give me your hand)
     ~shakeHands    
@@ -11,7 +11,7 @@ u:(shake hands)
     Let's shake hands
     
 u:(e:HandShakeService/handShakeCompleted)
-    ^pCall(ALSpeakingMovement.setEnabled(1))
+    ~endHandShake
     Nice to meet you
 
 u:(stop movement)    

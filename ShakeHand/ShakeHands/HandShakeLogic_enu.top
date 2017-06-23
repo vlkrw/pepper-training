@@ -1,0 +1,17 @@
+topic: ~HandShakeLogic()
+language: enu
+
+concept: (stopMovement) [" 
+    ^sCall(HandShakeService.stopMovement())
+"]
+
+concept: (startMovement) ["
+    ^sCall(HandShakeService.startMovement())
+"]
+
+concept: (shakeHands) ["
+    ^sCall(HandShakeService.initiateHandShake())
+"]
+
+concept: (endHandShake) ["
+"]
