@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<meta charset="UTF-8">
+ <head>
+   <title>Soundset browser</title>
+
+    <meta name="viewport"
+        content="initial-scale = 1.333,
+        minimum-scale = 1.333,
+        maximum-scale = 1.333" />
+    </meta>
+
+    <link rel='stylesheet' type='text/css' href='assets/style.css' >
+    <script type="text/javascript" src="assets/jquery.min.js"></script>
+
+    <style>
+    body{
+        /* Make everything unselectable */
+        -webkit-touch-callout: none; /* iOS Safari */
+        -webkit-user-select: none; /* Chrome/Safari/Opera */
+        -khtml-user-select: none; /* Konqueror */
+        -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+        user-select: none; /* Non-prefixed version, currently not supported by any browser */
+    }
+    </style>
+
+<script src="/libs/qimessaging/2/qimessaging.js"></script>
+
+<script type="text/javascript">
+    console.log("connection");
+    session = null;
+    audio_service = null;
+    //using qimessaging v2
+    function connected(s) {
+        console.log("connected");
+        // session is global
+        session = s
+        session.service('ALAudioPlayer').then(function (a) {
+            audio_service = a;
+        });
+        session.service('ALTextToSpeech').then(function (tts) {
+            tts.say("Loading soundsets");
+        });        
+        session.service("ALMemory").then(function (memory) {
+            memory.subscriber("soundset_browser_gr/filenames").then(function (subscriber) {
+                subscriber.signal.connect(function (list) {
+                    console.log(list);
+                    if ( list.length == 0)  {
+                        alert("No sounset files found");
+                    }
+                    else {
+                        for ( var idx in list ) {
+                            $('#list_of_sounds').append('<li onclick="play_sound(\''+list[idx]+'\')"  >' + list[idx] + '</li>');
+                        };                        
+                    }
+
+                });
+            });
+            return memory;
+        }).then(
+            function(memory){
+                memory.raiseEvent("soundset_browser_gr/pageready",1);
+            }
+        )
+        ;
+    }
+
+    function disconnected(error) {
+      console.log("disconnected");
+    }
+
+    QiSession( connected, disconnected, location.host);
+
+    function play_sound(v) {
+        audio_service.playSoundSetFile(v);
+    }
+
+</script>
+</head>
+
+<body>
+    <div id="wrapper">
+        <ul id="list_of_sounds" ></ul>
+    </div>
+</body>

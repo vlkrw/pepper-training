@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<package version="0.0.2" uuid="animation-training-demo">
+ <names>
+  <name lang="en_US">AnimationsTrainingDemo</name>
+ </names>
+ <descriptions>
+  <description lang="en_US">Description</description>
+ </descriptions>
+ <supportedLanguages>
+  <language>en_US</language>
+ </supportedLanguages>
+ <descriptionLanguages>
+  <language>en_US</language>
+ </descriptionLanguages>
+ <contents>
+  <behaviorContent path="Dance">
+   <userRequestable/>
+   <nature>interactive</nature>
+   <names>
+    <name lang="en_US">Dance</name>
+   </names>
+   <permissions/>
+  </behaviorContent>
+  <behaviorContent path="Demo">
+   <userRequestable/>
+   <nature>interactive</nature>
+   <names>
+    <name lang="en_US">Demo</name>
+   </names>
+   <descriptions>
+    <description lang="en_US">Description</description>
+   </descriptions>
+   <triggerSentences>
+    <sentence lang="en_US">can you dance</sentence>
+    <sentence lang="en_US">dance</sentence>
+    <sentence lang="en_US">dance application now</sentence>
+   </triggerSentences>
+   <loadingResponses>
+    <sentence lang="en_US">Human are always right</sentence>
+   </loadingResponses>
+   <autonomous>
+    <condition purpose="launchTrigger"><![CDATA[( size('PeoplePerception/PeopleList') > 1)]]></condition>
+   </autonomous>
+   <permissions/>
+  </behaviorContent>
+ </contents>
+ <requirements>
+  <naoqiRequirement maxVersion="2.5" minVersion="2.5"/>
+  <robotRequirement model="JULIETTE"/>
+ </requirements>
+</package>

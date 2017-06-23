@@ -1,0 +1,18 @@
+topic: ~AskForOperation()
+language: enu
+
+
+u:(e:onStart)
+    tell me what to do. i can add and subtract
+u:(add one)
+    adding $addOne=1
+
+u:(subtract one)
+    subtracting $subtractOne=1
+
+u:(e:MyApp/currentValue)
+    the value is now $MyApp/currentValue
+        
+u:(what is the value)
+    the value is $MyApp/currentValue
+

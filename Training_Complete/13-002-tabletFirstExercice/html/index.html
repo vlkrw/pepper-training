@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<meta charset="UTF-8">
+ <head>
+   <title>First tablet exercice QiMessaging v2</title>
+
+    <meta name="viewport"
+        content="initial-scale = 1.333,
+        minimum-scale = 1.333,
+        maximum-scale = 1.333" />
+    </meta>
+    
+    <script type="text/javascript" src="jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>
+
+    <link href='stl.css' rel='stylesheet' type='text/css'>
+    <link href='bootstrap/css/bootstrap.css' rel='stylesheet' type='text/css'>
+
+
+
+    <style>
+    body{
+        /* Make everything unselectable */
+        -webkit-touch-callout: none; /* iOS Safari */
+        -webkit-user-select: none; /* Chrome/Safari/Opera */
+        -khtml-user-select: none; /* Konqueror */
+        -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+        user-select: none; /* Non-prefixed version, currently not supported by any browser */
+    }
+    </style>
+
+<script src="/libs/qimessaging/2/qimessaging.js"></script>
+<!-- script src="/libs/qi/2/qi.js"></script -->
+
+
+<script type="text/javascript">
+    console.log("connection");
+    //host="198.18.0.1";
+    session = null;
+    //using qimessaging v2
+    function connected(s) {
+        console.log("connected");
+        // session is global
+        session = s
+        session.service("ALMemory").then(function (ALMemory) {
+            ALMemory.subscriber("completeName").then(function (subscriber) {
+                subscriber.signal.connect(function (state) {
+                    console.log(state);
+                    document.getElementById("completeNameField").value=state;
+                });
+            });
+        });
+    }
+
+    function disconnected(error) {
+      console.log("disconnected");
+    }
+
+    QiSession( connected, disconnected, location.host);
+
+    function send_to_choregraph() {
+        var fName=document.getElementById("firstNameField").value;
+        var lName=document.getElementById("lastNameField").value;
+        //var email=document.getElementById("toEmail").value;
+        
+        session.service("ALMemory").then(
+            function(memory){
+                memory.raiseEvent("fName",fName);
+                memory.raiseEvent("lName",lName);
+                //memory.raiseEvent("email",email);
+                //memory.raiseEvent("training/post",1);
+        }, function(error){
+            console.log("An error occurred:", error);
+        });
+    }
+
+</script>
+</head>
+
+<body>
+    <div class="wrapper">
+
+        <h1>Register </h1>
+
+        <div>
+          <p class="name-help">Please enter your first name.</p>
+        </div>
+        <input type="text" class="name" Id="firstNameField" placeholder="First Name">
+
+        <div>
+          <p class="name-help">Please enter your last name.</p>
+        </div>
+        <input type="text" class="name" id="lastNameField" placeholder="Last Name">
+
+         <div>
+          <p class="email-help">Please enter your current email address.</p>
+        </div>
+        <input type="email" class="email" id="toEmail" placeholder="Email">
+               
+        <p></p>     
+        <input type="submit" class="submit" value="Register" onclick="send_to_choregraph();">
+        <p></p>     
+
+        <input type="text" class="name" id="completeNameField" placeholder="Complete Name">
+
+
+<form>
+  <div class="form-group">
+    <label for="formGroupExampleInput">Example label</label>
+    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Example input">
+  </div>
+  <div class="form-group">
+    <label for="formGroupExampleInput2">Another label</label>
+    <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Another input">
+  </div>
+</form>
+
+
+    </div>
+</body>

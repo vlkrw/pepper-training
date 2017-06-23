@@ -1,0 +1,37 @@
+topic: ~AskForOperation()
+language: enu
+
+include: lexicon_enu.top
+
+concept:(increase) [add plus increment "increase by" more]
+concept:(decrease) [subtract minus decrement "decrease by" less]
+
+u:(e:onStart)
+    Hello, current value is $MyApp/currentValue
+    You can add or subtract one to this value.
+    ^gotoReactivate(goon)
+      
+                
+u:(e:MyApp/currentValue)
+    Value is now $MyApp/currentValue
+    Shall we go on ?
+    
+    u1:(~yes)
+        ^gotoReactivate(goon)
+        
+    u1:(~no)
+        Bye
+        $onStopped = 1
+
+        
+proposal: %goon
+    Do you want to add one or subtract one ?
+    
+    u1:(_~increase {one})
+        You said $1
+        u2:(_[sure yes])
+        You confirmed $1
+        $MyApp/addingMemKey=1
+    
+    u1:(~decrease {one})
+        $computeSubtractOne = 1

@@ -1,0 +1,25 @@
+topic: ~tabletDialog()
+language: frf
+
+concept:(ageconcept)[0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25]
+
+proposal:%completeName
+    u1:(e:completeName)
+        Ton nom complet est bien $completeName ?
+        u2:(oui)
+            cool ! quel est ton age ? ^goto(ageproposal)
+        u2:(non)
+            va falloir recommencer ! ^gotoReactivate(completeName)
+
+proposal:%ageproposal
+    u1:(_~ageconcept)
+        Oh ! Tu as $1 ans? $ageTest=$1
+        u2:(oui)
+            Super j'ai de bonne oreilles moi ! $ageevent=$ageTest Regarde ton age est maintenant sur la tablette ! 
+        u2:(non)
+            Ah... peux tu me le redire ? ^gotoReactivate(ageproposal)
+
+u:(e:onStart) 
+    Bonjour, voici un petit comportement liant dialogue et ma tablette.
+    Commence par renseigner sur ma tablette les trois premières informations
+    ^goto(completeName)

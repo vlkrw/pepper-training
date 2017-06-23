@@ -1,0 +1,29 @@
+topic: ~Dialog4Animation()
+language: enu
+
+u:(e:onStart)
+    ^gotoReactivate(begin)
+    
+proposal: %begin
+    Do you want a dance ?
+    u1:(yes)
+        Let's go 
+        ^start(animation-training-demo/Dance)
+        I can keep talking while I dance. Amazing ! 
+        ^wait(animation-training-demo/Dance)
+        
+        You see I believe I can fly.
+        
+    u1:(no)
+        ^gotoReactivate(goaway)
+
+u:([bye goodbye exit leave]) 
+    ^gotoReactivate(goaway)
+    
+proposal: %goaway 
+ok shall we leave ?
+    u1:(yes)
+        bye
+        $onStopped=1
+    u1:(no)
+        ^gotoReactivate(begin)

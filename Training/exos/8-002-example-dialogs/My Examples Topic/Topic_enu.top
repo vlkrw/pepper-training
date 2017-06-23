@@ -1,0 +1,215 @@
+topic: ~Topic()
+language: enu
+
+include: lexicon_enu.top
+
+
+concept:(numbers) [1 2 3 4 5 6 7 8 9]
+
+u:(_~numbers) 
+    You said $1
+
+
+# a first rule
+u:(hello robot) # human 
+    Hello I am Pepper #robot
+      
+u:(~yes)
+    you use lexicon    
+    
+# a second rule
+u:(what is your name)
+    I am Pepper
+
+# example 2 possible words
+u:(Can you [help advise] me ?)
+    Yes I can.
+
+u:(How old are you)    
+    Hello it is not basic channel here
+    
+# example option  
+u:(Are you a {tourist} guide)
+    No. I am a robot with a database.
+    
+# answer choice
+u:(Where should I go next time)
+    # one answer after the other on each input triggered
+    [ 
+        "The Eiffel Tower" 
+        "Monmartre" 
+        "Le Louvre"
+    ]
+    
+# random answer choice
+u:(Where should I go next)
+    ^rand[ "The Eiffel Tower" "Monmartre" "Moma" ]
+
+    
+# subrules
+u:(I want to go to the airport) 
+    By train or by taxi ?
+
+    u1:(train) Do you want the quickest or the cheapest way?
+    
+        u2:(quickest) I compute the quickest way
+        u2:(cheapest) I compute the cheapest way
+
+    u1:(taxi) let me call a taxi for you
+
+
+# subrules and stay inscope
+u:(I want to go to the train station) 
+    By metro or by taxi ?
+
+    u1:(metro) Do you want the quickest or the cheapest way? ^stayInScope
+    
+        u2:(quickest) I compute the quickest way
+        u2:(cheapest) I compute the cheapest way
+
+    u1:(taxi) let me call a taxi for you ^stayInScope
+
+    
+# Local variables
+u:(take the _[bus tramway taxi uber] to go to the _[airport "Eiffel Tower"])
+    Let's find a $1 so you can go to the $2
+    
+# Global variables
+u:(i want to go to the _[theatre "Museum"])  # Museum does not need double quotes
+    I will find you a way to the $1 $destination=$1
+    
+    # use a global variable
+    u1:(Where should I go)
+        Follow my instruction to go to $destination
+    
+    # delete global variable
+    u1:(I changed my mind)
+        no problem ^clear(destination)
+        
+# Global variables
+u:(i want to eat _[pasta falafel burgers])
+    I will find you a way to eat $1 $dish=$1
+    
+    u1:(How many italian restaurants in the area $dish==pasta)
+        Just two    
+    
+    u1:(How much does it cost)
+        ^first[
+            "$dish==pasta about 12 euros"
+            "$dish==falafel about 13 euros"
+            "I dont't know"
+        ]
+    
+# Catching inputs and triggering outputs
+#u:(e:onStart) $onStopped=1
+u:(e:onStart) Hi folks how are you today
+
+# Trigger on event
+u:(e:foundMetroLine)
+    You need to use the metro line $foundMetroLine
+    
+# Trigger on custom events
+u:(e:foundMetroLine2 tell me how to go)
+    You need to use the metro line $foundMetroLine2
+    
+# Trigger on robot events
+u:(e:FrontTactilTouched $FrontTactilTouched==1)
+    [ 
+        "Stop touching me !"
+        "I feel like a cat"
+        "Ouch you hurt me."
+    ]
+
+# Trigger on robot events
+u:(e:FrontTactilTouched $FrontTactilTouched==0)
+    [ 
+        "You are nice"
+    ]    
+    
+# dialog engine also triggers events
+#u:(e:Dialog/NotSpeaking5)
+#    Anybody here ?
+    
+#u:(e:Dialog/NotUnderstood)
+#    It is a pity we could not understand each other. Could you repeat ? 
+    
+u:(e:Dialog/Fallback)
+    no matched rule
+        
+    
+    
+   ######################################################## 
+    
+    
+# Advanced    
+    
+    
+
+# Defining extra concepts out of words or group of words
+concept:(hello) [hello hi hey "good morning" greetings]
+concept:(bye) ["bye bye" "au revoir" "bye"]
+
+concept:(greetings) ^rand[welcome "hey there"]
+
+concept:(wine) [red white] wine
+concept:(alcohol) [beer ~wine ]
+concept:(drink) [water coke ~alcohol ]
+
+u:(~greetings) ~greetings
+u:(do you have _~drink) yes, I have $1
+u:(I want to drink something) do you want ~alcohol ? #mind the space after concept name
+
+
+# use a concept
+u:(~hello)
+    Hello human, pleased to meet you.
+    # could also use ~hello as an answer
+    
+u:(_~bye)
+    You said $1 but you just arrived. Stay a bit more and talk with me.
+    # could also use ~hello as an answer
+    
+u:(_[hello hi hey "good morning" greetings])
+    Hello human, pleased to meet you.
+    # could also use ~hello as an answer
+    
+u:({i want to} stop now)
+    Ok. Bye. $onStopped=1
+    
+proposal:%understanding
+    Where do you want me to go.
+    
+u:(go)
+    ^goto(understanding)
+    
+u:(reactivation)
+    ^gotoReactivate(understanding)
+
+    
+u:(e:onStart)
+    ^start(animations/Stand/Gestures/Hey_3) 
+    #^startTag(hello)    
+    \style=joyful\ ~greetings
+    #^waitTag(hello)
+
+
+u:(e:onVisitor)
+    Bonjour \pau=500\ 
+    \eos=1\ Je m’appelle Pepper, je te propose de te présenter le salon \pau=800\
+    Je peux aussi t’indiquer les lieux que tu cherches \pau=800\ ou te montrer mes talents de \emph=2\ danseuse.
+        
+u:(presentation)
+    \bound=W\
+    ^start(animations/Stand/Emotions/Negative/Surprise_1)
+    Presentation \rspd=50\ \style=joyful\ that's all
+    ^stop(animations/Stand/Emotions/Negative/Surprise_1)
+
+    #^run(animations/Stand/Gestures/Me_2)
+    ^start(animations/LED/CircleEyes) 
+    Presentation \rspd=50\ \style=joyful\ that's all
+    ^stop(animations/LED/CircleEyes)
+            
+    
+    
+    
+

@@ -1,0 +1,18 @@
+topic: ~PARIS170321()
+language: enu
+
+u:(hello pepper) 
+    hello folks
+    
+u:(e:FrontTactilTouched)
+    you touch my head
+
+    other tule was called through event $destination
+      $destination=airport  
+      $dest=something
+    
+u:(e:destination)
+        you want to go to the $destination    
+    
+u:(e:dest)
+        another to go to the $dest    

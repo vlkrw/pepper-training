@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<package version="0.0.0" uuid="8-002-example-dialogs-30847e">
+ <names>
+  <name lang="en_US">8-002-example-dialogs</name>
+ </names>
+ <supportedLanguages>
+  <language>en_US</language>
+  <language>fr_FR</language>
+ </supportedLanguages>
+ <descriptionLanguages>
+  <language>en_US</language>
+  <language>fr_FR</language>
+ </descriptionLanguages>
+ <contents>
+  <behaviorContent path="behavior_1">
+   <nature>interactive</nature>
+   <permissions/>
+  </behaviorContent>
+  <behaviorContent path="Demo">
+   <nature>interactive</nature>
+   <permissions/>
+  </behaviorContent>
+  <behaviorContent path="DemoBehavior">
+   <nature>interactive</nature>
+   <permissions/>
+  </behaviorContent>
+  <dialogContent topicName="Topic" typeVersion="1.0">
+   <topic language="en_US" path="My Examples Topic/Topic_enu.top"/>
+   <topic language="fr_FR" path="My Examples Topic/Topic_frf.top"/>
+  </dialogContent>
+ </contents>
+</package>

@@ -1,0 +1,5 @@
+topic: ~test_same_dir()
+language: enu
+
+u:(match this rule)
+    this rule is in root level

@@ -1,0 +1,30 @@
+
+
+First connection to Pepper :
+
+let's ssh
+ssh nao@....
+
+Qicli :
+http://doc.aldebaran.com/libqi/guide/qicli.html
+
+# change robots name 
+$ qicli call ALSystem.setRobotName NAME 
+$ qicli call ALStore.update
+$ qicli call ALSystem.reboot
+
+
+# change robots language :
+$ qicli call ALDialog.setLanguage French
+$ qicli call ALTextToSpeech.setLanguage French
+$ qicli call ALSpeechRecognition.setLanguage French
+
+
+Common path :
+# nao user root dir
+/home/nao
+
+# package installation dir
+/home/nao/.local/share/PackageManager/apps/
+qicli call ALBehaviorManager.install package.pkg
+

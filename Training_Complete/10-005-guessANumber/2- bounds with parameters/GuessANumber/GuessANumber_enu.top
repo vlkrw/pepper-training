@@ -1,0 +1,23 @@
+topic: ~GuessANumber()
+language: enu
+
+u:(e:onStart)
+    Think of a number between 1 and 10
+    $guess=1
+    
+u:(e:guess)
+    Is it $MyApplication/value ?
+    u1:(higher)
+        #$MyApplication/lowerBound = $MyApplication/value 
+        $lower = $MyApplication/value
+        $random=1 
+    u1:(lower)
+        #$MyApplication/higherBound = $MyApplication/value
+        $higher = $MyApplication/value
+        $random=1
+    u1:(yes)
+        cool
+        $onStopped=1
+
+
+    

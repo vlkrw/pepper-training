@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<package uuid="pythonapp-860ca4" version="0.0.0">
+ <names>
+  <name lang="en_US">Python App</name>
+ </names>
+ <supportedLanguages>
+  <language>en_US</language>
+ </supportedLanguages>
+ <descriptionLanguages>
+  <language>en_US</language>
+ </descriptionLanguages>
+ <contents>
+  <behaviorContent path=".">
+   <userRequestable/>
+   <nature>interactive</nature>
+   <permissions/>
+  </behaviorContent>
+  <dialogContent topicName="pythonapplauncher" typeVersion="1.0">
+   <topic language="en_US" path="pythonapplauncher/pythonapplauncher_enu.top"/>
+  </dialogContent>
+ </contents>
+ <services>
+  <service autorun="false" name="PythonAppMain" execStart="main.py"/>
+ </services>
+ <executableFiles>
+  <file path="main.py"/>
+ </executableFiles>
+</package>

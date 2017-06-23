@@ -1,0 +1,21 @@
+.wrapper {
+     width: 1280px;
+     margin: 0 auto;
+     font-size: 200%;
+}
+form {
+    font-size: 200%;
+}
+input {
+    font-size: 100%;
+}
+
+#preview_canvas {
+	width: 1280px;
+	margin: 0 auto;
+	font-size: 200%;
+}
+
+.videoBorder {
+	border: 1px solid red;
+}

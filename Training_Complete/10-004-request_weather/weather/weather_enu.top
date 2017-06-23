@@ -1,0 +1,23 @@
+topic: ~weather()
+language: enu
+
+concept:(city) [Paris London Rome Lisbon Maastricht Amsterdam "Simpelveld"]
+
+
+u:(e:onStart)
+    Hello. ^goto(weather)
+
+proposal:%weather
+    In what city would you like to know the weather ? 
+    
+    u1:(_~city)
+        
+        Let's see what it looks like in $1
+        $MyApp/city = $1
+        
+        u2:(e:MyApp/weather)
+            $MyApp/weather in $MyApp/city
+            \pau=800\
+            ^run(animations/Stand/Emotions/Positive/Laugh_1)
+            \pau=5000\ ^sameProposal
+        

@@ -1,0 +1,31 @@
+Details on how to change default pepper's tablet image. 
+This default image can be a video.
+
+On the robot (eventually remotely but not tested, add --qui-url robot_ip to command )
+
+* to list key/value for a domain 
+
+$ qicli call ALPreferenceManager.getValueList "com.aldebaran.system.tablet"
+
+* to change default image change 2 domain key values 
+
+$ qicli call ALPreferenceManager.setValue com.aldebaran.system.tablet MainActivity  [image|opengl|video]
+$ qicli call ALPreferenceManager.setValue com.aldebaran.system.tablet MainResourceURL http://198.18.0.1/apps/myressources/default.png
+
+Once done do 
+$ nao restart
+
+"opengl" is the default bubbles image
+image and video are the strings "image" or "video"
+use video to display a mp4 video
+use image to display an image
+
+
+the image default.png is included in the html folder of the joined behavior
+
+
+Otherwise you can do that in a python box or script eventually in the same application joined here :
+
+self.preferences = self.session().service("ALPreferenceManager")
+self.preferences.setValue("com.aldebaran.system.tablet","MainActivity","image")
+self.preferences.setValue("com.aldebaran.system.tablet","MainResourceURL","http://198.18.0.1/apps/myressources/default.png")

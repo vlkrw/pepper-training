@@ -1,0 +1,9 @@
+topic: ~color()
+language: enu
+
+u:(in:onActivation) What is your favourite color?
+u1:(blue) blue! I love it myself! $ColorsDemo/ColorChosen=blue
+u1:(red) red! It scares me! $ColorsDemo/ColorChosen=red
+u1:(yellow) yellow! yeah! like the sun! $ColorsDemo/ColorChosen=yellow
+u1:(e:Dialog/NotUnderstood) Sorry, I did not understand, your favorite color can only be blue, red, or yellow. ^stayInScope
+u1:([stop exit]) ok, I will stop. $ColorsDemo/Exit=1

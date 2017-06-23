@@ -1,0 +1,20 @@
+topic: ~test()
+language: frf
+
+dynamic:names
+
+u:(e:onStart) 
+    Essaye de dire un nom !
+    
+u:(_~names)
+    Tu as dis $1 , c'était bien ca ?
+    u1:(oui)
+        cool ! A la prochaine $onStopped=1
+    u1:(non)
+        mince alors ! $onStart=1
+
+u:($Dialog/NotUnderstood)
+    Inconnu au bataillon $onStart=1
+    
+u:($Dialog/NotSpeaking20)
+    Aller dit essaye on va pas y passer la journée $onStart=1

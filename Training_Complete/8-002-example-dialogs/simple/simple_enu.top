@@ -1,0 +1,7 @@
+topic: ~simple()
+language: enu
+
+u:(go to the _[airport "train station"])
+    ok let's got to the $1 $MyApp/destination=$1
+    
+    

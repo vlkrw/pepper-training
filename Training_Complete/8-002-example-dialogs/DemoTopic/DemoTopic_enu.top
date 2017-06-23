@@ -1,0 +1,36 @@
+topic: ~DemoTopic()
+language: enu
+
+# Defining extra concepts out of words or group of words
+concept:(hello) [hello hi hey "good morning" greetings]
+
+concept:(setvoice) [ "\style=joyful\ \rspd=80\ " ]
+
+# Catching inputs and triggering outputs
+u:(e:onStart) 
+    ~setvoice
+    hello folks
+
+    ^start(animations/Stand/Gestures/Angry_1)
+    will contnueu
+    ^wait(animations/Stand/Gestures/Angry_1)
+    
+    ^run(animations/Stand/Emotions/Positive/Laugh_2)   
+
+    
+# Replying to speech
+u:(~hello)    ~setvoice ~hello
+
+u:(another input)     ~setvoice 
+    ok 
+    ^start(animations/Stand/Reactions/LightShine_1)
+    animation is runngin
+        ^wait(animations/Stand/Reactions/LightShine_1)
+
+    ^run(animations/Stand/Gestures/Angry_2)
+    animation was run and is over
+    
+u:(what is your name)
+    ~setvoice
+    My name is pepper $dataOutput=anything
+    

@@ -1,0 +1,32 @@
+topic: ~reservation()
+language: enu
+
+dynamic:available_rooms
+
+# text
+concept:(date) [monday tuesday wednesday thursday friday saturday]
+concept:(time) [ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 18 19 20 21 22 23 24] 
+concept:(which_day)  ["On which day do you need a room?"] 
+concept:(what_time) ["At what time?"]
+concept:(checking) ["I check room availability. ^run(animations/Stand/Waiting/Think_1) Ok."]
+concept:(not_available) ["Sorry, there are no rooms available."]
+concept:(available) ["You can have "]
+concept:(choice_room) ["Which room do you want?"]
+concept:(good) ["very well"]
+concept:(conclusion) ["  I have booked room $room for $date at $time . Bye bye $exit=1 "]
+             
+            
+# logic
+u:(in:onActivation) ~which_day
+    u1:(_~date) $date=$1 $1 ~good . ~what_time
+        u2:(_~time) $time=$1 ~checking  $check=1
+
+u:(e:notAvailable) ~not_available
+
+u:(e:available) $form=1  ~available ^enumerate(~available_rooms), ~choice_room
+    u1:(_~available_rooms) $1 $room=$1 ~good ^gotoReactivate(conclusion)
+    u1:(e:clickRoom) $clickRoom $room=$clickRoom ~good ^gotoReactivate(conclusion)
+
+proposal: %conclusion ~conclusion
+
+ 

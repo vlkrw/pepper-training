@@ -1,0 +1,37 @@
+topic: ~InteractionNotSpeakNotUnderstood()
+language: enu
+
+
+u:(e:onStart) 
+    Hello human. Do you want to play a game ?
+    u1:(yes)
+        ^goto(playgame)
+        u2:(no play again)
+            let's play again
+            ^gotoReactivate(playgame)
+        
+    u1:(no)
+        $onStopped=1
+
+u:(hello)
+    hello human
+        
+proposal: %playgame
+    We can play Chess or Scrabble. What do you prefer ? 
+    u1:(chess)
+        ok chess. do you choose white or black ? 
+
+        ^stayInScope
+        u2:(black)
+        ok
+    u1:(scrabble)
+        ok scrabble ^stayInScope
+
+    u1:(e:Dialog/NoOneSpeak5) [ 
+        " I can't hear you. ^sameProposal " 
+        " oh, it seems I'm alone. No worries, bye bye! $onStopped=1 "
+        ]
+    u1:(I am done)
+        ok
+
+

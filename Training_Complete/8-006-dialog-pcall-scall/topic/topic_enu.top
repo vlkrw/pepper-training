@@ -1,0 +1,30 @@
+topic: ~topic()
+language: enu
+
+u:(go to rest) 
+    i start to go to rest now. 
+    ^sCall(ALMotion.rest()) 
+    i am going down now \pau=5000\ done
+
+u:(wake up) 
+    i start to go to rest now. 
+    ^sCall(ALMotion.wakeUp()) 
+
+
+u:(stop moving)
+    ok
+    ^pCall(ALListeningMovement.setEnabled(0))
+    ^pCall(ALMotion.setBreathEnabled("Body", 0))
+    ^pCall(ALMotion.setIdlePostureEnabled("Body", 0))
+    ^pCall(ALBackgroundMovement.setEnabled(0))
+    
+u:(move again) 
+    ok i move again
+    ^pCall(ALListeningMovement.setEnabled(1))
+    ^pCall(ALMotion.setBreathEnabled("Body", 1))
+    ^pCall(ALMotion.setIdlePostureEnabled("Body", 1))
+    ^pCall(ALBackgroundMovement.setEnabled(1)) 
+  
+u:(exit)
+    bye    
+    $onStopped=1

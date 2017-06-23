@@ -1,0 +1,19 @@
+topic: ~ExampleDialog()
+language: frf
+
+
+u:(e:onStart) $min=1 $max=10 Pense à un nombre entre 1 et 10, je vais essayer de le deviner \Pau=3000\ $doGuess=1 
+
+u:(e:onGuess) Est-ce que c'est $guess ?
+    u1:(plus grand) ok $min=$guessup  $doGuess=1
+    u1:(plus petit) ok $max=$guessdown $doGuess=1
+    u1:([correct oui exact]) Trop fort! $onStopped=1
+    u1:(non) est il plus grand ou plus petit? ^stayInScope
+    
+    u1:(e:Dialog/NotUnderstood) quoi? ^stayInScope
+    u1:(e:Dialog/NotUnderstood2) pardon?^stayInScope
+    u1:(e:Dialog/NotUnderstood3) je ne comprend rien à ce que tu racontes! ^stayInScope   
+
+    u1:(e:Dialog/NotSpeaking10) alors? c'est le $guess ? ^stayInScope
+    u1:(e:Dialog/NotSpeaking15) Tu réponds ou bien? ^stayInScope
+    u1:(e:Dialog/NotSpeaking20) Bon, je crois que tu es parti! A bientot $onStopped=1

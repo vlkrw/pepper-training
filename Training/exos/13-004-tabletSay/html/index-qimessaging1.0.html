@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<meta charset="UTF-8">
+ <head>
+   <title>Test</title>
+   
+    <meta name="viewport"
+        content="initial-scale = 1.333,
+        minimum-scale = 1.333,
+        maximum-scale = 1.333" />
+    </meta>
+
+
+
+
+    <script src="/libs/qimessaging/1.0/qimessaging.js"></script>
+    <script type="text/javascript">
+   
+    session = new QiSession(location.host);//198.18.0.1 for 
+    session.socket().on('connect', function () {
+        console.log('QiSession connected!');
+
+        session.service("ALMemory").done(function (ALMemory) {
+          ALMemory.subscriber("firstName").done(function (subscriber) {
+            subscriber.signal.connect(function (state) {
+              console.log(state);
+              document.getElementById("firstName").value=state;
+            });
+          });
+    
+          ALMemory.subscriber("lastName").done(function (subscriber) {
+            subscriber.signal.connect(function (state) {
+              console.log(state);
+              document.getElementById("lastName").value=state;
+            });
+          });
+
+          ALMemory.subscriber("email").done(function (subscriber) {
+            subscriber.signal.connect(function (state) {
+              console.log(state);
+              document.getElementById("email").value=state;
+            });
+          });
+
+        });
+
+
+        
+          // now you can start using your QiSession
+    }).on('disconnect', function () {
+        console.log('QiSession disconnected!');
+    });
+
+    function send_to() {
+
+        //document.getElementById("firstName").value=navigator.userAgent;
+
+        var fName=document.getElementById("firstName").value;
+        var lName=document.getElementById("lastName").value;
+        var email=document.getElementById("email").value;
+
+        session.service("ALMemory").done(function(memory){        
+            memory.insertData("firstName",fName);
+            memory.insertData("lastName",lName);
+            memory.insertData("email",email);
+            memory.raiseEvent("training/post",1);
+        }).fail(function(error){
+            console.log("An error occurred:", error);
+        });
+    }
+
+   </script>
+</head>
+
+
+<body>
+<div class="wrapper">
+    <h1>User Information</h1>
+    <form class="form"  name="myform">
+
+        Firstname:
+        <input type="text" id="firstName" placeholder="First Name">
+        <br/>
+
+        Lastname:
+        <input type="text" id="lastName" placeholder="Last Name">
+        <br/>
+
+        Email:
+        <input type="email" id="email" placeholder="Email">
+        <br/>
+    
+  </form>
+<input type="submit" class="submit" value="Register" onclick="send_to();">
+</div>
+
+</body>

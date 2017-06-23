@@ -1,0 +1,13 @@
+topic: ~MyNewTopic()
+language: enu
+
+include: lexicon_enu.top
+
+u:(~yes)
+    ~yes
+    
+    
+u:(e:onStart)
+    hello human that's the beginning.
+    
+    

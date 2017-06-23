@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<package uuid="6-002-calculs-dialog-0ac624" version="0.0.0">
+ <names>
+  <name lang="en_US">6-002-calculs-dialog</name>
+ </names>
+ <supportedLanguages>
+  <language>en_US</language>
+ </supportedLanguages>
+ <descriptionLanguages>
+  <language>en_US</language>
+ </descriptionLanguages>
+ <contents>
+  <behaviorContent path="behavior_1">
+   <nature>interactive</nature>
+   <names>
+    <name lang="en_US">Calcul</name>
+   </names>
+   <autonomous>
+    <condition purpose="launchTrigger"><![CDATA[( 'Launchpad/NumPeopleZone1' >= 1 )]]></condition>
+   </autonomous>
+   <permissions/>
+  </behaviorContent>
+  <dialogContent typeVersion="1.0" topicName="AskForOperation">
+   <topic language="en_US" path="AskForOperation/AskForOperation_enu.top"/>
+   <topic language="fr_FR" path="AskForOperation/AskForOperation_frf.top"/>
+  </dialogContent>
+ </contents>
+</package>

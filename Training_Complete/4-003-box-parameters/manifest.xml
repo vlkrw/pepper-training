@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<package uuid="4-001-box-parameters-900590" version="0.0.0">
+ <names>
+  <name lang="en_US">4-001-box-parameters</name>
+ </names>
+ <supportedLanguages>
+  <language>en_US</language>
+ </supportedLanguages>
+ <descriptionLanguages>
+  <language>en_US</language>
+ </descriptionLanguages>
+ <contents/>
+</package>

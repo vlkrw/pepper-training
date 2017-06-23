@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<package uuid="soundset_browser_gr" version="0.0.2">
+ <names>
+  <name lang="en_US">Soundset Browser</name>
+ </names>
+ <descriptions>
+  <description lang="en_US">Simple soundset browser app that display soundset sound files link on tablet to play them </description>
+ </descriptions>
+ <supportedLanguages>
+  <language>en_US</language>
+ </supportedLanguages>
+ <descriptionLanguages>
+  <language>en_US</language>
+ </descriptionLanguages>
+ <contents>
+  <behaviorContent path=".">
+   <userRequestable/>
+   <nature>interactive</nature>
+   <names>
+    <name lang="en_US">Soundset browser</name>
+   </names>
+   <descriptions>
+    <description lang="en_US">Simple soundset browser behavior</description>
+   </descriptions>
+   <permissions/>
+  </behaviorContent>
+  <dialogContent topicName="pythonapplauncher" typeVersion="1.0">
+   <topic language="en_US" path="pythonapplauncher/pythonapplauncher_enu.top"/>
+  </dialogContent>
+ </contents>
+ <requirements>
+  <naoqiRequirement maxVersion="2.5" minVersion="2.5"/>
+  <robotRequirement model="JULIETTE"/>
+ </requirements>
+ <services>
+  <service name="SoundsetBrowserService" autorun="false" execStart="soundset_browser.py"/>
+ </services>
+ <executableFiles>
+  <file path="soundset_browser.py"/>
+ </executableFiles>
+</package>

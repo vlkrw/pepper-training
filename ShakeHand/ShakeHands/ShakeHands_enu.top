@@ -1,0 +1,23 @@
+topic: ~ShakeHands()
+language: enu
+
+include: logic.top
+
+u:(give me your hand)
+    ~shakeHands    
+        
+u:(shake hands)
+    ~shakeHands
+    Let's shake hands
+    
+u:(e:HandShakeService/handShakeCompleted)
+    ^pCall(ALSpeakingMovement.setEnabled(1))
+    Nice to meet you
+
+u:(stop movement)    
+    ~stopMovement
+    oooh
+        
+u:(start movement)
+    ~startMovement
+    yeah

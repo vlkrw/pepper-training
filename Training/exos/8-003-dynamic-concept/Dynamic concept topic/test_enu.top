@@ -1,0 +1,24 @@
+topic: ~test()
+language: enu
+
+# did you forget to declare your dynamic concept ?
+
+u:(e:onStart) 
+    Hello
+    $begin=1
+
+u:(e:begin)
+    Try saying a name !
+    
+u:()   # hey ! what should be the rule here ? 
+    You said $1 , is that correct ?
+    u1:(yes)
+        cool ! My hearing is good today. Bye $onStopped=1
+    u1:(no)
+        oh no ! $begin=1
+        
+u:()  # Sorry I cannot understand you...
+    Unknown name. $begin=1
+    
+u:()  # When you don't speak for long it's not funny
+    Come on, we are not going to stay all day here $begin=1

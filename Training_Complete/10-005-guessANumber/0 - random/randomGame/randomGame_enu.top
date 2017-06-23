@@ -1,0 +1,14 @@
+topic: ~randomGame()
+language: enu
+
+concept:(number) [0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20]
+
+u:(e:onStart) 
+    let's start this game ! I already have a number in mind between 0 and 20
+    
+u:(_~number) ^first[
+                "$1==$randomValue you're good ! let's stop this game $onStopped=1" 
+                "$1>$randomValue it's too high" 
+                "$1<$randomValue it's too low"
+                ]
+                

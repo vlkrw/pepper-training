@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<meta charset="UTF-8">
+ <head>
+   <title>Test</title>
+   
+    <meta name="viewport"
+        content="initial-scale = 1.333,
+        minimum-scale = 1.333,
+        maximum-scale = 1.333" />
+    </meta>
+
+
+    <link href='stl.css' rel='stylesheet' type='text/css'>
+
+    <script type="text/javascript" src="jquery.min.js"></script>
+
+    <!-- script src="/libs/qimessaging/2/qimessaging.js"></script -->
+
+    <script src="/libs/qi/2/qi.js"></script>
+    <script type="text/javascript">
+   
+        
+    console.log("connection");
+    //host="198.18.0.1";
+    session = null;
+
+    function connected(s) {
+        console.log("connected");
+        session = s
+        session.service("ALMemory").then(function (memory) {
+            memory.subscriber("html").then(function (subscriber) {
+                subscriber.signal.connect(function (state) {
+                    console.log(state);
+                    document.getElementById("wrapper").innerHTML=state;
+                });
+            });
+        });
+    }
+
+    function disconnected(error) {
+      console.log("disconnected");
+    }
+
+    QiSession( connected, disconnected);
+
+
+    function raiseEvent(key,value) {
+        console.log("raising "+key);
+        memory.raiseEvent(key,value);
+    }
+
+   </script>
+</head>
+
+
+<body>
+    RESERVATION
+<div id="wrapper">
+</div>
+</body>

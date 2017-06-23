@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<meta charset="UTF-8">
+ <head>
+   <title>First tablet exercice QiMessaging v2</title>
+
+    <meta name="viewport"
+        content="initial-scale = 1.333,
+        minimum-scale = 1.333,
+        maximum-scale = 1.333" />
+    </meta>
+
+    <link href='stl.css' rel='stylesheet' type='text/css'>
+
+    <script type="text/javascript" src="jquery-3.2.1.min.js"></script>
+
+    <script type="text/javascript" src="videoutils.js"></script>
+
+    <script src="/libs/qimessaging/2/qimessaging.js"></script>
+
+<script type="text/javascript">
+
+
+    console.log("connection");
+    //host="198.18.0.1";
+    session = null;
+    //using qimessaging v2
+    function connected(s) {
+        console.log("connected");
+        session = s;
+        subscriberName = "";
+        // Camera
+        session.service("ALVideoDevice").then(function(vid) {
+          theVideoDevice = vid;
+          VideoUtils.unsubscribeAllHandlers(theVideoDevice, subscriberName+"_camera").then(function() {
+            VideoUtils.startVideo(theVideoDevice, "videoBuffer", 0, 10, 0)
+            $('#loading_video').hide();
+          });
+        });
+        
+    }
+
+    function disconnected(error) {
+      console.log("disconnected");
+    }
+
+    QiSession( connected, disconnected);
+
+
+</script>
+</head>
+
+<body>
+    <div id="preview_canvas" class="previewCamera">
+      <canvas id="videoBuffer" class="videoBorder">Video player</canvas>
+    </div>
+</body>

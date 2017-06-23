@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<meta charset="UTF-8">
+<head>
+    <title>Test</title>
+    <link href='stl.css' rel='stylesheet' type='text/css'>
+    <script type="text/javascript" src="jquery.min.js"></script>
+
+    <!-- load qimessaging -->
+    <script src="/libs/qimessaging/2/qimessaging.js"></script>
+
+<script type="text/javascript">
+    console.log("connection")
+    session = null;
+
+    QiSession( connected, disconnected, location.host);
+
+    function connected(s) {
+        console.log("Session connected");
+        session = s
+        subscribe_to_events();
+    }
+    function disconnected(error) {
+      console.log("Session disconnected");
+    }
+
+    function subscribe_to_events() {
+        session.service("ALMemory").then(function (memory) {
+            memory.subscriber("completeName").then(function (subscriber) {
+                subscriber.signal.connect(function (state) {
+                    console.log(state);
+                    document.getElementById("completeName").value=state;
+                });
+            });
+            memory.subscriber("age").then(function (subscriber) {
+                subscriber.signal.connect(function (state) {
+                    console.log(state);
+                    document.getElementById("age").value=state;
+                });
+            });
+        });
+    }
+
+    function send_to_choregraph() {
+
+        var fName=document.getElementById("firstName").value;
+        var lName=document.getElementById("lastName").value;
+        
+        session.service("ALMemory").then(
+            function(memory){
+                memory.raiseEvent("fName",fName);
+                memory.raiseEvent("lName",lName);
+        }, 
+            function(error){
+                console.log("An error occurred:", error);
+        });
+    }
+
+   </script>
+</head>
+
+<body>
+    <div class="wrapper">
+
+        <h1>Register </h1>
+
+        <div>
+          <p class="name-help">Please enter your first name.</p>
+        </div>
+        <input type="text" class="name" Id="firstName" placeholder="First Name">
+
+        <div>
+          <p class="name-help">Please enter your last name.</p>
+        </div>
+        <input type="text" class="name" Id="lastName" placeholder="Last Name">
+
+        <p></p>     
+        <input type="submit" class="submit" value="Register" onclick="send_to_choregraph();">
+        <p></p>     
+
+         <div>
+          <p class="email-help">Complete name is :</p>
+        </div>
+        <input type="text" class="name" Id="completeName" placeholder="Complete Name">
+
+        <div>
+          <p class="email-help">Age is :</p>
+        </div>
+        <input type="text" class="name" Id="age" placeholder="age">
+
+
+        <div style='height: 800px;'> </div>
+
+
+    </div>
+</body>

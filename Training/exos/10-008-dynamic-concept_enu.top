@@ -1,0 +1,27 @@
+topic: ~dynconceptdemo()
+language: enu
+
+dynamic: names
+
+u:(in:onActivation) 
+    ^gotoReactivate(sayname)
+    
+u:(_~names)
+    You said $1 , is that correct ?
+    u1:(yes)
+        cool ! \pau=1000\
+    u1:(no)
+        oh no ! \pau=1000\ ^gotoReactivate(sayname)
+        
+u:(e:Dialog/NotUnderstood)
+    Unknown name. 
+    ^gotoReactivate(sayname)
+
+    
+u:(e:Dialog/NotSpeaking15)
+    Come on, we are not going to stay all day here. \pau=1000\
+    ^gotoReactivate(sayname)
+
+
+proposal: %sayname
+    Try saying a name !

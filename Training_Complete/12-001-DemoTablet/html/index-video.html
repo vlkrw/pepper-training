@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<meta charset="UTF-8">
+ <head>
+   <title>Test Tablet</title>
+
+    <meta name="viewport"
+        content="initial-scale = 1.333,
+        minimum-scale = 1.333,
+        maximum-scale = 1.333" />
+    </meta>
+
+    <style>
+	    body{
+	        /* Make everything unselectable */
+	        -webkit-touch-callout: none; /* iOS Safari */
+	        -webkit-user-select: none; /* Chrome/Safari/Opera */
+	        -khtml-user-select: none; /* Konqueror */
+	        -moz-user-select: none; /* Firefox */
+	        -ms-user-select: none; /* Internet Explorer/Edge */
+	        user-select: none; /* Non-prefixed version, currently not supported by any browser */
+	    }
+    </style>
+
+	<script src="/libs/qimessaging/2/qimessaging.js"></script>
+
+	<script type="text/javascript">
+	    console.log("connection");
+	    //host="198.18.0.1";
+	    session = null;
+	    //using qimessaging v2
+	    function connected(s) {
+	        console.log("connected");
+	        session = s
+	        session.service("ALMemory").then(function (ALMemory) {
+	            ALMemory.subscriber("completeName").then(function (subscriber) {
+	                subscriber.signal.connect(function (state) {
+	                    console.log(state);
+	                    document.getElementById("completeName").value=state;
+	                });
+	            });
+	        });
+	        // Camera
+			session.service("ALVideoDevice").then(function(vid) {
+			  theVideoDevice = vid;
+			  VideoUtils.unsubscribeAllHandlers(theVideoDevice, subscriberName+"_camera").then(function() {
+			    VideoUtils.startVideo(theVideoDevice, "videoBuffer", 0, 10, 0)
+			    $('#loading_video').hide();
+			  });
+			});
+	    }
+
+	    function disconnected(error) {
+	      console.log("disconnected");
+	    }
+
+	    QiSession( connected, disconnected, location.host);
+
+	    function send_to_choregraph() {
+	        var fName=document.getElementById("firstName").value;
+	        var lName=document.getElementById("lastName").value;
+	        
+	        session.service("ALMemory").then(
+	            function(memory){
+	                memory.raiseEvent("fName",fName);
+	                memory.raiseEvent("lName",lName);
+	        }, function(error){
+	            console.log("An error occurred:", error);
+	        });
+	    }
+
+	</script>
+</head>
+<body>
+	<div id="preview_canvas" class="previewCamera">
+	  <canvas id="videoBuffer" class="videoBorder">Video player</canvas>
+	</div>
+</body>
+</html>

@@ -1,0 +1,59 @@
+topic: ~StayInScope()
+language: enu
+
+#u:(_*)
+#   You said $1   
+   
+u:(go to the train station) 
+    By metro or by taxi ?
+
+    u1:(metro) Do you want the quickest or the cheapest way?  ^stayInScope
+    
+        u2:(quickest) I compute the quickest way
+        u2:(cheapest) I compute the cheapest way
+
+    u1:(taxi) let me call a taxi for you 
+    
+    u1:(e:Dialog/NotUnderstood)
+        what did you say ? ^stayInScope
+    
+    #u1:(quickest) upper quickest
+  
+    u1:(thanks) you're welcome
+
+
+    
+u:(scope testing) 
+    do you want to test scope ?
+
+    u1:(yes test scope) what should I do ?  ^stayInScope
+    
+        u2:(enter you two rule) I am in you two rule ^stayInScope
+            u3:(enter u three rule) I am in three rule  ^stayInScope
+
+        u2:(just do it) That's not clear...
+            
+    u1:(I am not sure) Think about it then ! ^stayInScope
+    
+    u1:(no I don't want) ok bye
+    
+u:(hello)
+    [ yes "yes of course" "yes absolutely"  ]
+
+u:(I like _[green blue])
+   You said $1 $color=$1
+  
+u:(e:color)
+    ok $color
+
+u:(e:onStart)    
+    $computedDestinationOutput=anything
+    $demoOutput=1
+    
+u:(bye)
+    are you sure ? 
+    u1:(yes)
+    ok good bye
+    $onStopped=1    
+    
+    

@@ -1,0 +1,29 @@
+topic: ~test()
+language: enu
+
+# don't use punctutation in input
+u:(hello ! _  ?)
+    hello human, input cleaned
+    $room=0
+    
+u:(what room $room>1)
+    room is $room
+
+    
+    
+u:(_[1 2 3 4 5])
+^first[
+      "$1 > 1 && $1 < 5 that's 2, 3 or 4"
+      "$1 == 5 i'ts five"
+      "one"
+]
+
+
+
+u:(_["train station" "bus bus" airport])
+$train="train station"
+^first[
+      "$1 == "train station" it's five"
+      "$1 == airport Charles de Gaulles"
+      "one"
+]

@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<package version="0.0.0" uuid="15-111-reservationservice-ccdd7c">
+ <names>
+  <name lang="en_US">Reservation service</name>
+ </names>
+ <supportedLanguages>
+  <language>en_US</language>
+ </supportedLanguages>
+ <descriptionLanguages>
+  <language>en_US</language>
+ </descriptionLanguages>
+ <contents>
+  <behaviorContent path=".">
+   <nature>interactive</nature>
+   <permissions/>
+  </behaviorContent>
+ </contents>
+ <services>
+  <service autorun="false" execStart="reservation_service.py" name="ReservationService"/>
+ </services>
+ <executableFiles>
+  <file path="reservation_service.py"/>
+ </executableFiles>
+</package>

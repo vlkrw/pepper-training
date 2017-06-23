@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<meta charset="UTF-8">
+ <head>
+   <title>First tablet exercice QiMessaging v2</title>
+
+    <meta name="viewport"
+        content="initial-scale = 1.333,
+        minimum-scale = 1.333,
+        maximum-scale = 1.333" />
+    </meta>
+
+    <link href='stl.css' rel='stylesheet' type='text/css'>
+    <script type="text/javascript" src="jquery.min.js"></script>
+
+<!-- for local debug :  -->
+<!-- script src="/libs/qimessaging/1.0/qimessaging.js"></script -->
+<script src="/libs/qimessaging/2/qimessaging.js"></script>
+
+<script type="text/javascript">
+    console.log("connection");
+    //host="198.18.0.1";
+    session = null;
+    //using qimessaging v2
+    function connected(s) {
+        console.log("connected");
+        session = s
+        session.service("ALTextToSpeech").then(function (tts) {
+            // tts is a proxy to the ALTextToSpeech service
+            tts.say("Hello i am connected").then(function () {
+                console.log("I spoke");
+            }, function (error) {
+                console.log("An error occurred: " + error);
+            });
+        });
+        
+    }
+
+    function disconnected(error) {
+      console.log("disconnected");
+    }
+
+    QiSession( connected, disconnected, location.host);
+
+    function start_app() {
+
+        session.service("ALAutonomousLife").then(
+            function(al){
+                al.switchFocus("timeline-demo/behavior_1", 1);
+        }, function(error){
+            console.log("An error occurred:", error);
+        });
+
+    }
+
+    function say_something() {
+
+        session.service("ALTextToSpeech").then(
+            function(tts){
+                tts.say("Hello tablet");
+        }, function(error){
+            console.log("An error occurred:", error);
+        });
+
+    }
+
+</script>
+</head>
+
+<body>
+    <div class="wrapper">
+
+        <h1>Speak </h1>
+
+        <p></p>     
+        <input type="submit" class="submit" value="Say" onclick="say_something();">
+        <input type="submit" class="submit" value="Start" onclick="start_app();">
+
+        <p></p>     
+
+
+    </div>
+</body>

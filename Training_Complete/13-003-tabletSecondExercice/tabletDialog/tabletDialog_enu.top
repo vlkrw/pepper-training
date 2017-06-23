@@ -1,0 +1,28 @@
+topic: ~tabletDialog()
+language: enu
+
+concept:(age)[0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25]
+
+proposal:%completeName
+    u1:(e:completeName)
+        Is your complete name $completeName ?
+        u2:(yes)
+            cool ! And how old are you ? ^goto(age)
+        u2:(no)
+            oh no ! we'll have to restart !
+            ^gotoReactivate(completeName)
+
+proposal:%age 
+    u1:(_~age)
+        Oh ! Are you $1 years old? $ageTest=$1
+        u2:(yes)
+            Perfect ! Seems like my hearing is good today !
+            $age=$ageTest
+            Look now your age is on the tablet !
+        u2:(no)
+            Oh ! Could you say it again ? ^gotoReactivate(age)
+
+u:(e:onStart) 
+    Here is a small behavior that links dialog to the tablet.
+    Could you please start by filling the first two inputs on my tablet ?
+    ^goto(completeName)

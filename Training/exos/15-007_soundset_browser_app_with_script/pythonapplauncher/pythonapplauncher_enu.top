@@ -1,0 +1,4 @@
+topic: ~pythonapplauncher()
+language: enu
+
+u:([sound "sound set" soundset ] browser {demo}) sure ! let me show you the best app ever! You  can click on sounds and listen them  ^switchFocus(soundset_browser_gr/.)

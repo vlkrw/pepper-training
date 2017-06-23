@@ -1,0 +1,4 @@
+topic: ~topic()
+language: enu
+
+u:(go to rest) i start to go to rest now. ^sCall(ALMotion.rest()) I am in rest position now. $onStopped=1

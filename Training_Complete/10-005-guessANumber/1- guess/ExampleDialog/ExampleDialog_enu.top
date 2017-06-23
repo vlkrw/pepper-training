@@ -1,0 +1,21 @@
+topic: ~ExampleDialog()
+language: enu
+
+u:(e:onStart) 
+    $min=1 
+    $max=10 
+    Think about a number between 1 and 10, I'll try to guess it \pau=3000\ $doGuess=1 
+
+u:(e:onGuess) Is your number $guess ?
+    u1:(higher) ok $min=$guessup  $doGuess=1
+    u1:(lower) ok $max=$guessdown $doGuess=1
+    u1:([correct yes]) awesome $onStopped=1
+    u1:(no) damn, is it higher or lower? ^stayInScope
+    
+    u1:(e:Dialog/NotUnderstood) what? ^stayInScope
+    u1:(e:Dialog/NotUnderstood2) I'm sorry, can you repeat?^stayInScope
+    u1:(e:Dialog/NotUnderstood3) Seriously, speak proper english please! ^stayInScope   
+
+    u1:(e:Dialog/NotSpeaking10) so? is it $guess ? ^stayInScope
+    u1:(e:Dialog/NotSpeaking15) Are you answering or what? ^stayInScope
+    u1:(e:Dialog/NotSpeaking20) Well I guess you're gone! see you soon $onStopped=1

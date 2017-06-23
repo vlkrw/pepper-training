@@ -1,0 +1,8 @@
+Change Robots name
+
+> ssh nao@ IP Address
+> yes
+> qicli call ALSystem.setRobotName NAME 
+> qicli call ALStore.update
+> qicli call ALSystem.reboot
+

@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<package uuid="interactive-and-solitary" version="0.0.5">
+ <names>
+  <name lang="en_US">SolitaryInteractiveActivity</name>
+  <name lang="en_US-x-scrald">SolitaryInteractiveActivity</name>
+  <name lang="fr_FR">Activité solitary</name>
+  <name lang="fr_FR-x-scrald">Activité solitary</name>
+ </names>
+ <descriptions>
+  <description lang="en_US">This is an example of Solitary, Interactive and NoNature activities</description>
+  <description lang="en_US-x-scrald">This is an example of Solitary, Interactive and NoNature activities</description>
+  <description lang="fr_FR">This is an example of Solitary, Interactive and NoNature activities</description>
+  <description lang="fr_FR-x-scrald">This is an example of Solitary, Interactive and NoNature activities</description>
+ </descriptions>
+ <supportedLanguages>
+  <language>en_US</language>
+  <language>fr_FR</language>
+ </supportedLanguages>
+ <descriptionLanguages>
+  <language>en_US</language>
+  <language>fr_FR</language>
+ </descriptionLanguages>
+ <contents>
+  <behaviorContent path="Interactive">
+   <nature>interactive</nature>
+   <names>
+    <name lang="en_US">Interactive animation</name>
+    <name lang="en_US-x-scrald">Interactive animation</name>
+   </names>
+   <descriptions>
+    <description lang="en_US">First interactive application !</description>
+    <description lang="en_US-x-scrald">First interactive application !</description>
+    <description lang="fr_FR">First interactive application !</description>
+    <description lang="fr_FR-x-scrald">First interactive application !</description>
+   </descriptions>
+   <triggerSentences>
+    <sentence lang="en_US">Interactive activity</sentence>
+    <sentence lang="en_US-x-scrald">Interactive activity</sentence>
+    <sentence lang="fr_FR">Actvité interactive</sentence>
+    <sentence lang="fr_FR-x-scrald">Actvité interactive</sentence>
+   </triggerSentences>
+   <loadingResponses>
+    <sentence lang="en_US">Loading Interactive activity</sentence>
+    <sentence lang="en_US-x-scrald">Loading Interactive activity</sentence>
+    <sentence lang="fr_FR">Chargement de l'activité interactive</sentence>
+    <sentence lang="fr_FR-x-scrald">Chargement de l'activité interactive</sentence>
+   </loadingResponses>
+   <autonomous>
+    <condition purpose="launchTrigger"><![CDATA[( 'RightBumperPressed' == 1 ) || ( 'LeftBumperPressed' ==1 ) || ( size('PeoplePerception/PeopleList') > 1 ) ]]></condition>
+   </autonomous>
+   <permissions/>
+  </behaviorContent>
+  <behaviorContent path="Solitary">
+   <nature>solitary</nature>
+   <names>
+    <name lang="en_US">Solitary activity</name>
+    <name lang="en_US-x-scrald">Solitary activity</name>
+    <name lang="fr_FR">Solitaire 1</name>
+    <name lang="fr_FR-x-scrald">Solitaire 1</name>
+   </names>
+   <descriptions>
+    <description lang="en_US">This application contains the following solitary activity: when the robot
+does not detect anyone for 10 seconds, he says
+</description>
+    <description lang="en_US-x-scrald">This application contains the following solitary activity: when the robot
+does not detect anyone for 10 seconds, he says
+</description>
+    <description lang="fr_FR">This application contains the following solitary activity: when the robot
+does not detect anyone for 10 seconds, he says
+</description>
+    <description lang="fr_FR-x-scrald">This application contains the following solitary activity: when the robot
+does not detect anyone for 10 seconds, he says
+</description>
+   </descriptions>
+   <autonomous>
+    <condition purpose="launchTrigger"><![CDATA[(('Launchpad/PeopleNotSeen' == 1) ~ 10)  && ('Launchpad/PreviousActivity' != "interactive-and-solitary/Solitary")
+]]></condition>
+   </autonomous>
+   <permissions/>
+  </behaviorContent>
+  <behaviorContent path="NoNature">
+   <nature></nature>
+   <names>
+    <name lang="en_US">NoNature</name>
+    <name lang="en_US-x-scrald">NoNature</name>
+    <name lang="fr_FR">SansNature</name>
+    <name lang="fr_FR-x-scrald">SansNature</name>
+   </names>
+   <autonomous>
+    <condition purpose="launchTrigger"><![CDATA[1]]></condition>
+   </autonomous>
+   <permissions/>
+  </behaviorContent>
+  <behaviorContent path="Solitary2">
+   <nature>solitary</nature>
+   <names>
+    <name lang="en_US">Solitary2</name>
+    <name lang="en_US-x-scrald">Solitary2</name>
+    <name lang="fr_FR">Solitaire 2</name>
+    <name lang="fr_FR-x-scrald">Solitaire 2</name>
+   </names>
+   <descriptions>
+    <description lang="en_US">Solitary 2</description>
+    <description lang="en_US-x-scrald">Solitary 2</description>
+    <description lang="fr_FR">Solitaire 2</description>
+    <description lang="fr_FR-x-scrald">Solitaire 2</description>
+   </descriptions>
+   <autonomous>
+    <condition purpose="launchTrigger"><![CDATA[(('Launchpad/DurationPeopleNotSeen' > 5 ) ~ 5)  && ('Launchpad/PreviousActivity' != "interactive-and-solitary/Solitary2")]]></condition>
+   </autonomous>
+   <permissions/>
+  </behaviorContent>
+  <dialogContent typeVersion="1.0" topicName="applauncher">
+   <topic language="en_US" path="applauncher/applauncher_enu.top"/>
+   <topic language="fr_FR" path="applauncher/applauncher_frf.top"/>
+  </dialogContent>
+ </contents>
+ <requirements>
+  <naoqiRequirement maxVersion="2.4" minVersion="2.4"/>
+  <robotRequirement model="NAO"/>
+  <robotRequirement model="JULIETTE"/>
+ </requirements>
+</package>

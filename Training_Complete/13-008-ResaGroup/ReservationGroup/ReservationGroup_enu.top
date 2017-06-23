@@ -1,0 +1,50 @@
+topic: ~ReservationGroup()
+language: enu
+
+dynamic:available_rooms
+dynamic:dyntime
+
+# content
+concept:(date) [monday tuesday wednesday thursday friday saturday]
+#concept:(time) [ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 18 19 20 21 22 23 24] 
+concept:(which_day)  ["On which day do you need a meeting room?"] 
+concept:(what_time) ["At what time is your meeting?"]
+concept:(checking) [" ^start(animations/Stand/Waiting/LookHand_2)  I check room availability. ^wait(animations/Stand/Waiting/LookHand_2)  "]
+concept:(positive) [yes]
+concept:(negative) [no]
+concept:(confirmation) [" \style=joyful\ I have booked room \pau=500\ $ReservationApp/roomBooked \pau=500\ for $ReservationApp/date at $ReservationApp/time .  ^clear(ReservationApp/roomBooked) $onStopped=1 "]
+
+
+#logic
+proposal: %conclusion ~confirmation
+
+
+u:(e:onStart)
+    ~which_day
+    u1:(_~date)
+        $ReservationApp/date=$1
+        ~what_time
+        u2:(_~dyntime)
+            $ReservationApp/time=$1
+            ~checking 
+            $ReservationApp/process=anything1
+        
+            
+u:(e:ReservationApp/room_checked_ok)
+    $ReservationApp/form=1 
+    ~yes
+    #concept 
+    ^enumerate(~available_rooms)
+    #mem value ^enumerate($ReservationApp/room_checked_ok)
+    u1:(_~available_rooms)
+        $1 $ReservationApp/roomBooked=$1 ^gotoReactivate(conclusion)
+    u1:(e:ReservationApp/clickRoom)
+        $ReservationApp/clickRoom  $ReservationApp/roomBooked=$ReservationApp/clickRoom  ^gotoReactivate(conclusion)
+    u1:($Dialog/NotSpeaking20)
+        Can you choose ? Did you leave ?
+    
+u:(e:ReservationApp/room_checked_nok)
+    ~negative
+    $onStopped=1
+
+

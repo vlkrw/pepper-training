@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<package uuid="10-005-guessanumberdialog-f76a9c" version="0.0.0">
+ <names>
+  <name lang="en_US">10-005-guessANumberDialog</name>
+ </names>
+ <supportedLanguages>
+  <language>en_US</language>
+  <language>fr_FR</language>
+ </supportedLanguages>
+ <descriptionLanguages>
+  <language>en_US</language>
+  <language>fr_FR</language>
+ </descriptionLanguages>
+ <contents>
+  <behaviorContent path="1- guess">
+   <userRequestable/>
+   <nature>interactive</nature>
+   <names>
+    <name lang="en_US">guess a number</name>
+    <name lang="fr_FR">devine un nombre</name>
+   </names>
+   <triggerSentences>
+    <sentence lang="en_US">guess a number</sentence>
+    <sentence lang="fr_FR">devine un nombre</sentence>
+   </triggerSentences>
+   <permissions/>
+  </behaviorContent>
+  <behaviorContent path="0 - random">
+   <nature>interactive</nature>
+   <permissions/>
+  </behaviorContent>
+  <behaviorContent path="2- bounds with parameters">
+   <nature>interactive</nature>
+   <permissions/>
+  </behaviorContent>
+ </contents>
+</package>

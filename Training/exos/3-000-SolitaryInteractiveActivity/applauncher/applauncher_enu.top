@@ -1,0 +1,8 @@
+topic: ~applauncher()
+language: enu
+
+u:(e:interactive-and-solitary/EnoughPeopleToStart)
+    ^switchFocus(interactive-and-solitary/.)
+    
+u:(show me an interactive app)
+    ^switchFocus(interactive-and-solitary/.)

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?><ChoregrapheProject xmlns="http://www.aldebaran-robotics.com/schema/choregraphe/project.xsd" xar_version="3"><Box name="root" id="-1" localization="8" tooltip="Root box of Choregraphe&apos;s behavior. Highest level possible." x="0" y="0"><bitmap>media/images/box/root.png</bitmap><script language="4"><content><![CDATA[]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" /><Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" /><Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="4" /><Timeline enable="0"><BehaviorLayer name="behavior_layer1"><BehaviorKeyframe name="keyframe1" index="1"><Diagram scale="100"><Box name="DetectObjectInHand" id="1" localization="8" tooltip="" x="363" y="86"><bitmap>media/images/box/box-python-script.png</bitmap><script language="4"><content><![CDATA[import time
+import math
+
+#~ deg
+#~ rad=deg*math.pi/180
+
+class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+    def onLoad(self):
+        self.tts      = self.session().service("ALTextToSpeech")
+        self.posture  = self.session().service("ALRobotPosture")
+        self.motion   = self.session().service("ALMotion")
+        self.al       = self.session().service("ALAutonomousLife")
+        self.state    = self.al.getState()
+        self.abilities = { 'AutonomousBlinking': True, 'BackgroundMovement': True, 'BasicAwareness': True, 'ListeningMovement': True, 'SpeakingMovement': True }
+        for ab in self.abilities.keys():
+            try:
+                self.abilities[ab] = self.al.getAutonomousAbilityEnabled(ab)
+            except:
+                pass
+        self.stopAbilities()
+
+    def onUnload(self):
+        self.resetAbilities()
+        self.al.setState(self.state)
+        self.logger.info(self.al.getState())
+        self.logger.info(str(self.abilities))
+        pass
+
+    def stopAbilities(self):
+        for ab in self.abilities.keys():
+            try:
+                self.logger.info(ab)
+                self.al.setAutonomousAbilityEnabled(ab, False)
+            except:
+                pass
+
+    def resetAbilities(self):
+        for ab, status in self.abilities.items():
+            try:
+                self.logger.info("Reset ability " + ab )
+                self.al.setAutonomousAbilityEnabled(ab, status)
+            except:
+                pass
+
+    def raiseArm(self):
+        names = list()
+        keys = list()
+
+        names.append("RElbowRoll")
+        keys.extend([0.360532])
+
+        names.append("RElbowYaw")
+        keys.extend([1.58765])
+
+        names.append("RHand")
+        keys.extend([1])
+
+        names.append("RShoulderPitch")
+        keys.extend([0.561486])
+
+        names.append("RShoulderRoll")
+        keys.extend([0.31136])
+
+        names.append("RWristYaw")
+        keys.extend([1.15353])
+        self.motion.setAngles(names,keys,0.2)
+        time.sleep(3)
+
+    def throw(self):
+        names = list()
+        keys = list()
+
+        names.append("RElbowRoll")
+        keys.extend([1.50])
+
+        names.append("RElbowYaw")
+        keys.extend([1.58765])
+
+        #names.append("RHand")
+        #keys.extend([1])
+
+        names.append("RShoulderPitch")
+        keys.extend([-0.9])
+
+        names.append("RShoulderRoll")
+        keys.extend([0.31136])
+
+        names.append("RWristYaw")
+        keys.extend([1.15353])
+        self.motion.setAngles(names,keys,1)
+        time.sleep(0.2)
+
+        self.motion.setAngles("RHand",1,1)
+        time.sleep(1)
+
+    def onInput_onStart(self):
+
+        #self.logger.info(self.al.getAutonomousAbilitiesStatus())
+        self.motion.wakeUp()
+
+        self.motion.setStiffnesses("RArm",1)
+        time.sleep(0.02)
+        self.raiseArm()
+        self.tts.say("give me an object")
+
+        time.sleep(2)
+        #~ time.sleep(2)
+        self.motion.setAngles("RHand",0,1)
+
+        time.sleep(0.75)
+        # get current position of Hand
+        v=self.motion.getAngles("RHand",True)[0]
+        self.logger.info("Angle: "+str(v))
+
+        thresh=self.getParameter("threshold")
+
+        if v>thresh:
+            #~ v=0.16
+            self.motion.setAngles("RHand",v*0.8,1)
+            self.tts.say("Thank you")
+            self.throw()
+            #self.safeCrouch()
+            self.onStopped()
+        else:
+            self.tts.say("Come on")
+            self.retry()
+
+        #~ self.tts.say("hey")
+
+
+    def onInput_onStop(self):
+        self.onUnload()
+        self.onStopped()
+        pass
+
+    def safeCrouch(self):
+        self.posture.goToPosture("Crouch",0.8)
+        self.motion.setStiffnesses("Body",0)
+        time.sleep(0.02)
+        self.motion.setStiffnesses(["LHipYawPitch","RHipYawPitch","LHipPitch","RHipPitch"],1)]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" /><Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" /><Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="4" /><Output name="retry" type="1" type_size="1" nature="2" inner="0" tooltip="" id="5" /><Parameter name="threshold" inherits_from_parent="0" content_type="2" value="0.05" default_value="0.1" min="0" max="1" tooltip="" id="6" /></Box><Box name="Comment" id="2" localization="8" tooltip="To comment your behavior. Enter the text here and move the box where you like&#x0A;to add the comment.&#x0A;&#x0A;Note: This box is not functional and has no effect on the behavior." plugin="textedit_plugin" x="935" y="183"><bitmap>media/images/box/box-script.png</bitmap><script language="4"><content><![CDATA[# /!\ Generated content. Do not edit!
+class MyClass(GeneratedClass):
+	def __init__(self):
+		GeneratedClass.__init__(self)
+
+	def onInput_onStart(self):
+		self.onStopped("Nao asks for an object and detect if it has been given one and throws it away.\nCheck the angle values in logs and adapt the threshold parameter to your robot")]]></content></script><pluginContent><text><![CDATA[Nao asks for an object and detect if it has been given one and throws it away.
+Check the angle values in logs and adapt the threshold parameter to your robot]]></text></pluginContent><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when Diagram is loaded." id="1" /></Box><Box name="Set Language" id="3" localization="8" tooltip="Select the language you would like the robot to speak and understand. Any following call to&#x0A;ALSpeechRecognition (Speech Reco. box for instance) or ALTextToSpeech (Say box&#x0A;for instance) will use this language." x="93" y="80"><bitmap>media/images/box/interaction/say.png</bitmap><script language="4"><content><![CDATA[class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self, False)
+
+    def onLoad(self):
+        try:
+            self.tts = ALProxy("ALTextToSpeech")
+        except:
+            self.logger.warn("ALTextToSpeech is not available, language setting cannot be applied to speech")
+            self.tts = None
+
+        try:
+            self.asr = ALProxy("ALSpeechRecognition")
+        except:
+            self.logger.warn("ALSpeechRecognition is not available, language setting cannot be applied to recognition")
+            self.asr = None
+
+        try:
+            self.dialog = ALProxy("ALDialog")
+        except:
+            self.logger.warn("ALDialog is not available, language setting cannot be applied to dialog")
+            self.dialog = None
+
+    def onInput_onSet(self):
+        lang = self.getParameter("Language")
+        try:
+            if self.asr:
+                self.asr.setLanguage( self.getParameter("Language") )
+            if self.tts:
+                self.tts.setLanguage( self.getParameter("Language") )
+            if self.dialog:
+                self.dialog.setLanguage( self.getParameter("Language") )
+            if self.tts is None and self.asr is None and self.dialog is None:
+                raise RuntimeError("Cannot set language: neither ALTextToSpeech nor ALSpeechRecognition nor ALDialog is available.")
+            self.onReady()
+        except:
+            error = "Language " + lang + " cannot be set."
+            self.logger.warn(error)
+            self.onError(error)]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="onSet" type="1" type_size="1" nature="1" inner="0" tooltip="The data is set when a signal is received on this input." id="2" /><Output name="onReady" type="1" type_size="1" nature="2" inner="0" tooltip="Signal sent when the data has been set." id="3" /><Output name="onError" type="3" type_size="1" nature="2" inner="0" tooltip="Error output:&#x0A;- triggered if the language asked cannot be set" id="4" /><Parameter name="Language" inherits_from_parent="0" content_type="3" value="English" default_value="English" custom_choice="1" tooltip="Set the language the robot speaks and understands." id="5"><Choice value="Arabic" /><Choice value="Brazilian" /><Choice value="Chinese" /><Choice value="Czech" /><Choice value="Danish" /><Choice value="Dutch" /><Choice value="English" /><Choice value="Finnish" /><Choice value="French" /><Choice value="German" /><Choice value="Greek" /><Choice value="Italian" /><Choice value="Japanese" /><Choice value="Korean" /><Choice value="Norwegian" /><Choice value="Polish" /><Choice value="Portuguese" /><Choice value="Russian" /><Choice value="Spanish" /><Choice value="Swedish" /><Choice value="Turkish" /></Parameter><Resource name="Speech" type="Lock" timeout="0" /></Box><Box name="giveme" id="4" localization="8" tooltip="" x="249" y="244"><bitmap>media/images/box/box-timeLine.png</bitmap><script language="4"><content><![CDATA[]]></content></script><Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" /><Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" /><Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" /><Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="4" /><Timeline enable="1" fps="25" start_frame="1" end_frame="-1" size="45"><ActuatorList model="juliette"><ActuatorCurve name="value" actuator="HeadPitch" mute="0" unit="0"><Key frame="25" value="-5.80078" /></ActuatorCurve><ActuatorCurve name="value" actuator="HeadYaw" mute="0" unit="0"><Key frame="25" value="23.1152" /></ActuatorCurve><ActuatorCurve name="value" actuator="HipPitch" mute="0" unit="0"><Key frame="25" value="-6.24024" /></ActuatorCurve><ActuatorCurve name="value" actuator="HipRoll" mute="0" unit="0"><Key frame="25" value="-0.703127" /></ActuatorCurve><ActuatorCurve name="value" actuator="KneePitch" mute="0" unit="0"><Key frame="25" value="0.791018" /></ActuatorCurve><ActuatorCurve name="value" actuator="LElbowRoll" mute="0" unit="0"><Key frame="25" value="-10.8984" /></ActuatorCurve><ActuatorCurve name="value" actuator="LElbowYaw" mute="0" unit="0"><Key frame="25" value="-82.5293" /></ActuatorCurve><ActuatorCurve name="value" actuator="LHand" mute="0" unit="1"><Key frame="25" value="0.521968" /></ActuatorCurve><ActuatorCurve name="value" actuator="LShoulderPitch" mute="0" unit="0"><Key frame="25" value="91.7578" /></ActuatorCurve><ActuatorCurve name="value" actuator="LShoulderRoll" mute="0" unit="0"><Key frame="25" value="4.57031" /></ActuatorCurve><ActuatorCurve name="value" actuator="LWristYaw" mute="0" unit="0"><Key frame="25" value="-19.3386" /></ActuatorCurve><ActuatorCurve name="value" actuator="RElbowRoll" mute="0" unit="0"><Key frame="25" value="11.7774" /></ActuatorCurve><ActuatorCurve name="value" actuator="RElbowYaw" mute="0" unit="0"><Key frame="25" value="85.4297" /><Key frame="45" value="-12.9" /></ActuatorCurve><ActuatorCurve name="value" actuator="RHand" mute="0" unit="1"><Key frame="25" value="0.574692" /></ActuatorCurve><ActuatorCurve name="value" actuator="RShoulderPitch" mute="0" unit="0"><Key frame="25" value="92.1973" /><Key frame="45" value="-6.1" /></ActuatorCurve><ActuatorCurve name="value" actuator="RShoulderRoll" mute="0" unit="0"><Key frame="25" value="-4.83398" /></ActuatorCurve><ActuatorCurve name="value" actuator="RWristYaw" mute="0" unit="0"><Key frame="25" value="20.8279" /></ActuatorCurve></ActuatorList></Timeline></Box><Link inputowner="3" indexofinput="2" outputowner="0" indexofoutput="2" /><Link inputowner="1" indexofinput="2" outputowner="3" indexofoutput="3" /><Link inputowner="1" indexofinput="2" outputowner="1" indexofoutput="5" /><Link inputowner="0" indexofinput="4" outputowner="1" indexofoutput="4" /></Diagram></BehaviorKeyframe></BehaviorLayer></Timeline></Box></ChoregrapheProject>

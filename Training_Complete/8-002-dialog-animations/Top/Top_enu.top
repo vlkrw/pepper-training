@@ -1,0 +1,45 @@
+topic: ~Top()
+language: enu
+
+include: lexicon_enu.top
+include: /home/nao/.local/share/PackageManager/apps/.lastUploadedChoregrapheBehavior/test_same_dir_enu.top
+include: ../test_same_dir_enu.top
+
+
+# Defining extra concepts out of words or group of words
+concept:(answer) ["ok let's go"]
+concept:(journey) ["paris"]
+
+# Catching inputs and triggering outputs
+#u:(e:onStart) $onStopped=1
+
+# Replying to speech
+#u:(~hello) ~hello
+
+concept:(style) [ " \style=joyful\ " ]
+
+u:(~journey)
+ ~style ho ho good let's travel 
+    ~answer $comp1234=paris
+    $mymementry=12334
+    
+u:(_[~yes ~no ])    
+    You said $1
+    
+u:(animation)
+    ^start(animations/Stand/Waiting/Helicopter_1)
+    \pau=3000\ 
+    Woh an helicopter
+    
+    ^wait(animations/Stand/Waiting/Helicopter_1)
+    
+
+    
+u:(sentence demo)
+
+    \bound=W\ I bought an \pau=1000\ orange this morning.
+    \bound=S\ I bought an apple this morning.
+    \bound=N\ ~style I bought a banana this morning.
+    That's all
+    
+    

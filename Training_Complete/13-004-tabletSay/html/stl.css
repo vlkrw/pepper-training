@@ -1,0 +1,11 @@
+.wrapper {
+     width: 1280px;
+     margin: 0 auto;
+     font-size: 200%;
+}
+form {
+    font-size: 200%;
+}
+input {
+    font-size: 100%;
+}

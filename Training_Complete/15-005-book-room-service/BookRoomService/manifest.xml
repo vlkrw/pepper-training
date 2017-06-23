@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<package version="0.0.0" uuid="bookroomservice-ef580d">
+ <names>
+  <name lang="en_US">ResaGroup</name>
+ </names>
+ <descriptions>
+  <description lang="en_US">Reservation</description>
+ </descriptions>
+ <supportedLanguages>
+  <language>en_US</language>
+  <language>fr_FR</language>
+ </supportedLanguages>
+ <descriptionLanguages>
+  <language>en_US</language>
+  <language>fr_FR</language>
+ </descriptionLanguages>
+ <contents>
+  <behaviorContent path="behavior_1">
+   <userRequestable/>
+   <nature>interactive</nature>
+   <names>
+    <name lang="en_US">Reservation</name>
+   </names>
+   <descriptions>
+    <description lang="en_US">Reservation</description>
+   </descriptions>
+   <triggerSentences>
+    <sentence lang="en_US">Reservation</sentence>
+   </triggerSentences>
+   <loadingResponses>
+    <sentence lang="en_US">Loading reservation</sentence>
+   </loadingResponses>
+   <autonomous/>
+   <permissions>
+    <canStandUp/>
+    <canRunOnPod/>
+    <canSitDown/>
+   </permissions>
+  </behaviorContent>
+  <behaviorContent path=".">
+   <nature>interactive</nature>
+   <triggerSentences/>
+   <loadingResponses/>
+   <autonomous/>
+   <permissions/>
+  </behaviorContent>
+  <dialogContent typeVersion="1.0" topicName="ReservationGroup">
+   <topic path="ReservationGroup/ReservationGroup_enu.top" language="en_US"/>
+  </dialogContent>
+ </contents>
+ <requirements>
+  <naoqiRequirement minVersion="2.4" maxVersion="2.4"/>
+  <robotRequirement model="JULIETTE"/>
+ </requirements>
+</package>

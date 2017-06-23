@@ -1,0 +1,8 @@
+topic: ~applauncher()
+language: frf
+
+u:(e:interactive-and-solitary/EnoughPeopleToStart)
+    ^switchFocus(interactive-and-solitary/Interactive)
+    
+u:(montre moi une application interactive)
+    ^switchFocus(interactive-and-solitary/Interactive)
