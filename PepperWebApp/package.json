@@ -1,0 +1,9 @@
+{
+  "name": "PepperApp",
+  "version": "0.1.0",
+  "dependencies": {
+    "express": "latest",
+    "body-parser": "latest",
+    "ejs": "latest"
+  }
+}
