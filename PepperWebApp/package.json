@@ -5,6 +5,11 @@
     "express": "latest",
     "body-parser": "latest",
     "ejs": "latest",
-  	"bluebird": "latest"
+  	"bluebird": "latest",
+    "bootstrap": "latest",
+    "bootstrap-material-design": "latest",
+    "jquery": "latest",
+    "mdbootstrap": "latest",
+    "jsonfile": "latest"
   }
 }

@@ -6,6 +6,22 @@ $( document ).ready(function() {
 
 function loadValues(){
   getVolume().then((data) => $("#volumetext").text("Lautstärke: " + data));
+
+  getSavedText().then((text) => {
+    if(text.length == 0){
+      return;
+    }
+
+    textArray = JSON.parse(text);
+
+    while($(".text").length < textArray.length){
+      addNewTextCard();
+    }
+
+    $( ".text" ).each(function( index ) {
+      $(this).find("textarea").val(textArray[index]);
+    });
+  });
 }
 
 function getVolume(){
@@ -17,23 +33,74 @@ function getVolume(){
   });
 }
 
+function getSavedText(){
+  return new Promise(function (fulfill, reject){
+    $.get("/text", ((data) => fulfill(data)));
+  }).catch(err => {
+    console.error(err.stack);
+    return err;
+  });
+}
+
 function setupListeners(){
-  $("#buttonStart").click(function() {
-    var textToSay = $("#text").val();
+  $('.container').on('click', '.buttonPlay', function() {
+    var textToSay = $(this).parent().siblings("textarea").val();
     if(textToSay.length == 0){
       alert("Bitte zuerst einen Text eingeben!");
       return;
     }
 
-    var data = {};
-    data.text = textToSay;
-    data.animated = $('#animationCheckbox').is(':checked');
+    say(textToSay);
+  });
 
-    postToServer("/say", JSON.stringify(data));
+  $('.container').on('click', '.buttonRemove', function() {
+    $(this).parent().parent().remove();
+  });
+
+  $('.container').on('click', '.buttonMoveUp', function() {
+    var cardAbove = $(this).parent().parent().prev();
+    if(cardAbove.hasClass("text")){
+      cardAbove.before($(this).parent().parent());
+    }
+  });
+
+  $('.container').on('click', '.buttonMoveDown', function() {
+    var cardUnder = $(this).parent().parent().next();
+    if(cardUnder.hasClass("text")){
+      cardUnder.after($(this).parent().parent());
+    }
+  });
+
+  $("#buttonAddText").click(function() {
+    addNewTextCard();
+  });
+
+  $("#buttonSave").click(function() {
+    var text = [];
+    $( ".text" ).each(function( index ) {
+      text.push($(this).find("textarea").val());
+    });
+    postToServer("/text", JSON.stringify(text)).then(() => {
+      $("#save_alert").css('display', 'block');
+      setTimeout(function(){$("#save_alert").fadeOut(500)}, 2000);
+    });
   });
 
   $("#buttonVup").click(() => changeVolume(10));
   $("#buttonVdown").click(() => changeVolume(-10));
+}
+
+function addNewTextCard(){
+  $(".text:last").clone().insertAfter(".text:last");
+  $(".text:last textarea").val("");
+}
+
+function say(textToSay){
+  var data = {};
+  data.text = textToSay;
+  data.animated = $('#animationCheckbox').is(':checked');
+
+  postToServer("/say", JSON.stringify(data));
 }
 
 function changeVolume(changeValue){

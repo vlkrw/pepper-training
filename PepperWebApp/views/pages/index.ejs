@@ -6,20 +6,35 @@
 </head>
 <body>
   <% include ../partials/navbar %>
+  <div id= "save_alert" style="display:none; position:absolute" class="alert alert-success">
+    <strong>Gespeichert!</strong>
+  </div>
   <div class="container">
     <div class="row">
       <div class="col-md-12">
         <form class="form-horizontal">
           <div class="form-group is-empty">
             <div class="col-md-12">
-              <h3>Text:</h3>
-              <textarea class="form-control" rows="3" id="text"></textarea>
-              <div class="checkbox">
-                <a id="buttonStart" class="btn btn-raised btn-primary">Start<div class="ripple-container"></div></a>
-                <label>
-                  <input type="checkbox" id="animationCheckbox"><span class="checkbox-material"><span class="check"></span></span> Animation
-                </label>
+              <h3 id="volumetext">Text:</h3>
+
+              <div class="card text" style="margin-bottom: 10px">
+                <textarea class="form-control"></textarea>
+                <div class="buttons" style="text-align: right">
+                  <a class="btn btn-raised btn-primary btn-sm buttonMoveUp"><span class="glyphicon glyphicon-arrow-up"></span><div class="ripple-container"></div></a>
+                  <a class="btn btn-raised btn-primary btn-sm buttonMoveDown"><span class="glyphicon glyphicon-arrow-down"></span><div class="ripple-container"></div></a>
+                  <a class="btn btn-raised btn-primary btn-sm buttonRemove"><span class="glyphicon glyphicon-remove"></span><div class="ripple-container"></div></a>
+                  <a class="btn btn-raised btn-primary btn-sm buttonPlay"><span class="glyphicon glyphicon-play"></span><div class="ripple-container"></div></a>
+                </div>
               </div>
+
+              <label>
+                <input type="checkbox" id="animationCheckbox"><span class="checkbox-material"><span class="check"></span></span> Animation
+              </label>
+              <div class="buttons" style="text-align: right">
+                <a id="buttonAddText" class="btn btn-raised btn-primary">Text hinzufügen<div class="ripple-container"></div></a>
+                <a id="buttonSave" class="btn btn-raised btn-primary">Speichern<div class="ripple-container"></div></a>
+              </div>
+
             </div>
             <div class="col-md-12">
               <h3 id="volumetext">Lautstärke:</h3>

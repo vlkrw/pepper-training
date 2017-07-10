@@ -2,6 +2,8 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var exec = require('child_process').exec;
+var jsonfile = require('jsonfile')
+var path = require('path')
 var pepperIP = "10.0.137.152";
 
 app.use(bodyParser.json());
@@ -50,6 +52,23 @@ app.post('/say', function (req, res) {
     executeQicliCommand('ALTextToSpeech.say "'+ text + '"');
   }
   res.end();
+});
+
+app.post('/text', function (req, res) {
+  var text = req.body;
+  var file = path.resolve(__dirname, 'text.json');
+
+  jsonfile.writeFile(file, text, function (err) {
+    console.error(err)
+  })
+  res.end();
+});
+
+app.get('/text', function (req, res) {
+  var file = path.resolve(__dirname, 'text.json');
+  jsonfile.readFile(file, function(err, obj) {
+    res.end(JSON.stringify(obj));
+  })
 });
 
 app.post('/movement', function (req, res) {
