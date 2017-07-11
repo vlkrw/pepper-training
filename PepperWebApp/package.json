@@ -10,6 +10,7 @@
     "bootstrap-material-design": "latest",
     "jquery": "latest",
     "mdbootstrap": "latest",
-    "jsonfile": "latest"
+    "jsonfile": "latest",
+    "ip": "latest"
   }
 }

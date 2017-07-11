@@ -2,9 +2,12 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var exec = require('child_process').exec;
-var jsonfile = require('jsonfile')
-var path = require('path')
-var pepperIP = "10.0.137.152";
+var jsonfile = require('jsonfile');
+var multer  = require('multer');
+var path = require('path');
+var fs = require("fs");
+var ip = require('ip');
+var pepperIP = "192.168.1.100";
 
 app.use(bodyParser.json());
 app.set('view engine', 'ejs');
@@ -23,8 +26,27 @@ app.get('/leds', function (req, res) {
   res.render('pages/leds');
 });
 
+app.get('/tablet', function (req, res) {
+  res.render('pages/tablet');
+});
+
+app.get('/image', function (req, res) {
+  var img = fs.readFileSync('./logo.png');
+  res.writeHead(200, {'Content-Type': 'image/png' });
+  res.end(img, 'binary');
+});
+
+app.post('/image', function (req, res) {
+  var name = req.body.name;
+  if(name == ""){
+    executeQicliCommand("ALTabletService.hideImage");
+  }else{
+    executeQicliCommand("ALTabletService.showImage 'http://192.168.1.103:8080/image'");
+  }
+});
+
 app.get('/volume', function (req, res) {
-  executeQicliCommand("ALAudioDevice.getOutputVolume").then((result) => res.end(result));
+  executeQicliCommand("ALAudioDevice.getOutputVolume").then((result) => res.end(result.match(/\d+/)[0]));
 });
 
 app.post('/volume', function (req, res) {
@@ -39,7 +61,7 @@ app.post('/volume', function (req, res) {
 });
 
 app.get('/battery', function (req, res) {
-  executeQicliCommand("ALBattery.getBatteryCharge").then((result) => res.end(result));
+  executeQicliCommand("ALBattery.getBatteryCharge").then((result) => res.end(result.match(/\d+/)[0]));
 });
 
 app.post('/say', function (req, res) {
@@ -146,8 +168,8 @@ app.post('/leds', function (req, res) {
   res.end();
 });
 
-app.listen(3000, function () {
-  console.log('Pepper app listening on port 3000!');
+app.listen(8080, function () {
+  console.log('Pepper app listening on ' + ip.address() + ' 8080!');
 });
 
 function executeQicliCommand(command){
