@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/headercontent %>
+  <script src="scripts/textApp.js"></script>
+</head>
+<body>
+  <% include ../partials/navbar %>
+  <div id= "save_alert" style="display:none; position:absolute" class="alert alert-success">
+    <strong>Gespeichert!</strong>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <form class="form-horizontal">
+          <div class="form-group is-empty">
+            <div class="col-md-12">
+              <h3>Text:</h3>
+
+              <div class="card text" style="margin-bottom: 10px">
+                <textarea class="form-control"></textarea>
+                <div class="buttons" style="text-align: right">
+                  <a class="btn btn-raised btn-primary buttonMoveUp"><span class="glyphicon glyphicon-arrow-up"></span><div class="ripple-container"></div></a>
+                  <a class="btn btn-raised btn-primary buttonMoveDown"><span class="glyphicon glyphicon-arrow-down"></span><div class="ripple-container"></div></a>
+                  <a class="btn btn-raised btn-danger buttonRemove"><span class="glyphicon glyphicon-remove"></span><div class="ripple-container"></div></a>
+                  <a class="btn btn-raised btn-primary buttonPlay"><span class="glyphicon glyphicon-play"></span><div class="ripple-container"></div></a>
+                </div>
+              </div>
+
+              <label>
+                <input type="checkbox" id="animationCheckbox"><span class="checkbox-material"><span class="check"></span></span> Animation
+              </label>
+              <div class="buttons" style="text-align: right">
+                <a id="buttonAddText" class="btn btn-raised btn-primary">Text hinzufügen<div class="ripple-container"></div></a>
+                <a id="buttonSave" class="btn btn-raised btn-primary">Speichern<div class="ripple-container"></div></a>
+              </div>
+
+            </div>
+            <div class="col-md-12">
+              <h3 id="volumetext">Lautstärke:</h3>
+              <a id="buttonVup" class="btn btn-raised btn-primary">Lauter<div class="ripple-container"></div></a>
+              <a id="buttonVdown" class="btn btn-raised btn-primary">Leiser<div class="ripple-container"></div></a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
