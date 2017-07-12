@@ -3,10 +3,9 @@ var app = express();
 var bodyParser = require('body-parser');
 var exec = require('child_process').exec;
 var jsonfile = require('jsonfile');
-var multer  = require('multer');
 var path = require('path');
 var fs = require("fs");
-var ip = require('ip');
+var os = require('os');
 var pepperIP = "192.168.1.100";
 
 app.use(bodyParser.json());
@@ -169,7 +168,8 @@ app.post('/leds', function (req, res) {
 });
 
 app.listen(8080, function () {
-  console.log('Pepper app listening on ' + ip.address() + ' 8080!');
+  getIp();
+  console.log('Pepper app listening on  8080!');
 });
 
 function executeQicliCommand(command){
@@ -189,5 +189,31 @@ function executeCommand(command){
   }).catch(err => {
     console.error(err.stack);
     return err;
+  });
+}
+
+function getIp(){
+  var ifaces = os.networkInterfaces();
+
+  console.log(os.hostname());
+
+  Object.keys(ifaces).forEach(function (ifname) {
+    var alias = 0;
+
+    ifaces[ifname].forEach(function (iface) {
+      if ('IPv4' !== iface.family || iface.internal !== false) {
+        // skip over internal (i.e. 127.0.0.1) and non-ipv4 addresses
+        return;
+      }
+
+      if (alias >= 1) {
+        // this single interface has multiple ipv4 addresses
+        console.log(ifname + ':' + alias, iface.address);
+      } else {
+        // this interface has only one ipv4 adress
+        console.log(ifname, iface.address);
+      }
+      ++alias;
+    });
   });
 }
