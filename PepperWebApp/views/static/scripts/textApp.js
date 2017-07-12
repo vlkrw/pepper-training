@@ -54,7 +54,13 @@ function setupListeners(){
   });
 
   $('.container').on('click', '.buttonRemove', function() {
-    $(this).parent().parent().remove();
+    var cardAbove = $(this).parent().parent().prev();
+    var cardUnder = $(this).parent().parent().next();
+    if(cardAbove.hasClass("text") || cardUnder.hasClass("text")){
+      $(this).parent().parent().remove();
+    }else{
+      $(this).parent().siblings("textarea").val("");
+    }
   });
 
   $('.container').on('click', '.buttonMoveUp', function() {

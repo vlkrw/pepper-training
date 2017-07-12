@@ -7,11 +7,14 @@ var path = require('path');
 var fs = require("fs");
 var os = require('os');
 var pepperIP = "192.168.1.100";
+var multer = require('multer');
+var router = express.Router();
 
 app.use(bodyParser.json());
 app.set('view engine', 'ejs');
 app.use('/', express.static(__dirname + '/views/static'));
 app.use('/', express.static(__dirname + '/node_modules'));
+app.use('/', express.static(__dirname + '/images'));
 
 app.get('/', function (req, res) {
   res.render('pages/index');
@@ -29,19 +32,32 @@ app.get('/tablet', function (req, res) {
   res.render('pages/tablet');
 });
 
-app.get('/image', function (req, res) {
-  var img = fs.readFileSync('./logo.png');
-  res.writeHead(200, {'Content-Type': 'image/png' });
-  res.end(img, 'binary');
+app.get('/imagenames', function (req, res) {
+  var imagenames = [];
+  fs.readdirSync("images/").forEach(file => {
+    imagenames.push(file);
+  });
+
+  res.send(JSON.stringify(imagenames));
 });
 
-app.post('/image', function (req, res) {
-  var name = req.body.name;
-  if(name == ""){
-    executeQicliCommand("ALTabletService.hideImage");
-  }else{
-    executeQicliCommand("ALTabletService.showImage 'http://192.168.1.103:8080/image'");
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'images/');
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
   }
+})
+const upload = multer({storage: storage, fileFilter: function (req, file, cb) {
+  if (!file.originalname.toLowerCase().match(/\.(jpg|jpeg|png|gif)$/)) {
+      return cb(new Error('Only image files are allowed!'));
+  }
+  cb(null, true);
+}});
+
+app.post('/image', upload.single("image"), function(req, res) {
+  res.redirect('back');
 });
 
 app.get('/volume', function (req, res) {
@@ -172,7 +188,7 @@ app.listen(8080, function () {
 });
 
 function executeQicliCommand(command){
-  return executeCommand("qicli call " + command + " --qi-url " + pepperIP);
+  //return executeCommand("qicli call " + command + " --qi-url " + pepperIP);
 }
 
 function executeCommand(command){

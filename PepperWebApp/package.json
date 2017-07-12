@@ -11,6 +11,7 @@
     "jquery": "latest",
     "mdbootstrap": "latest",
     "jsonfile": "latest",
-    "ip": "latest"
+    "multer": "latest",
+    "bootstrap-filestyle": "latest"
   }
 }
