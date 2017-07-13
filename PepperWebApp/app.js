@@ -6,9 +6,11 @@ var jsonfile = require('jsonfile');
 var path = require('path');
 var fs = require("fs");
 var os = require('os');
-var pepperIP = "192.168.1.100";
 var multer = require('multer');
 var router = express.Router();
+
+const PEPPER_IP = "192.168.1.100";
+const PORT = "8080";
 
 app.use(bodyParser.json());
 app.set('view engine', 'ejs');
@@ -58,6 +60,28 @@ const upload = multer({storage: storage, fileFilter: function (req, file, cb) {
 
 app.post('/image', upload.single("image"), function(req, res) {
   res.redirect('back');
+});
+
+app.post("/showimage", function(req, res){
+  var name = req.body.name;
+  if(name == ""){
+    executeQicliCommand("ALTabletService.hideImage");
+  }else{
+    executeQicliCommand("ALTabletService.showImage 'http://" + getIp() + name + "'");
+  }
+});
+
+app.post("/removeimage", function(req, res){
+  var name = req.body.name;
+
+  fs.stat("images" + name, function (err, stats) {
+    if(err) return console.log(err);
+
+    fs.unlinkSync("images" + name,function(err){
+      res.end();
+      if(err) return console.log(err);
+    });
+  });
 });
 
 app.get('/volume', function (req, res) {
@@ -184,11 +208,11 @@ app.post('/leds', function (req, res) {
 });
 
 app.listen(8080, function () {
-  console.log('Pepper app listening on ' + getIp() + ':8080');
+  console.log('Pepper app listening on ' + getIp());
 });
 
 function executeQicliCommand(command){
-  //return executeCommand("qicli call " + command + " --qi-url " + pepperIP);
+  return executeCommand("qicli call " + command + " --qi-url " + PEPPER_IP);
 }
 
 function executeCommand(command){
@@ -221,7 +245,7 @@ function getIp(){
     });
 
     if(interfaces.length > 0){
-      ip = interfaces[0].address;
+      ip = interfaces[0].address + ":" + PORT;
     }
   });
 

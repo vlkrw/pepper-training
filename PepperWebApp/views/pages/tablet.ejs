@@ -5,7 +5,6 @@
     <script type="text/javascript" src="bootstrap-filestyle/src/bootstrap-filestyle.min.js"> </script>
     <script src="scripts/tablet.js"></script>
     <link rel="stylesheet" type="text/css" href="css/tablet.css">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
   </head>
   <body>
     <% include ../partials/navbar %>
@@ -17,7 +16,6 @@
           <form action="/image" id="imageForm" method="POST" enctype="multipart/form-data">
             <input type="file" id="imageInput" data-buttonText="Bild hochladen" data-input="false" class="filestyle" name="image" accept="image/*">
           </form>
-          <a id="buttonShow" class="btn btn-raised btn-primary">Bild Anzeigen<div class="ripple-container"></div></a>
           <a id="buttonHide" class="btn btn-raised btn-primary">Bild Entfernen<div class="ripple-container"></div></a>
         </div>
       </div>

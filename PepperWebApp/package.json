@@ -12,6 +12,7 @@
     "mdbootstrap": "latest",
     "jsonfile": "latest",
     "multer": "latest",
-    "bootstrap-filestyle": "latest"
+    "bootstrap-filestyle": "latest",
+    "bootstrap3-dialog": "latest"
   }
 }

@@ -54,13 +54,29 @@ function setupListeners(){
   });
 
   $('.container').on('click', '.buttonRemove', function() {
-    var cardAbove = $(this).parent().parent().prev();
-    var cardUnder = $(this).parent().parent().next();
-    if(cardAbove.hasClass("text") || cardUnder.hasClass("text")){
-      $(this).parent().parent().remove();
-    }else{
-      $(this).parent().siblings("textarea").val("");
-    }
+    var button = $(this);
+    BootstrapDialog.show({
+        title: 'Bild löschen',
+        message: 'Soll dieser Text wirklich gelöscht werden?',
+        buttons: [{
+          label: 'Ja',
+          action: function(dialog) {
+            dialog.close();
+            var cardAbove = button.parent().parent().prev();
+            var cardUnder = button.parent().parent().next();
+            if(cardAbove.hasClass("text") || cardUnder.hasClass("text")){
+              button.parent().parent().remove();
+            }else{
+              button.parent().siblings("textarea").val("");
+            }
+          }
+        }, {
+          label: 'Nein',
+          action: function(dialog) {
+              dialog.close();
+          }
+        }]
+    });
   });
 
   $('.container').on('click', '.buttonMoveUp', function() {
