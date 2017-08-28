@@ -6,10 +6,12 @@ import json
 import qi
 from threading import Lock
 import sys
+import TextToAnswerClient
 
-client_secret = '7c8dbb5b479847d0b840102d13cc348a'
+client_secret = 'd439cfc879c04377a57eff5d3fca2bf4'
 ws_url = "wss://speech.platform.bing.com/speech/recognition/interactive/cognitiveservices/v1?format=simple&language=de-DE"
 auth_client = AzureAuthClient(client_secret)
+serviceid = 0
 
 class SpeechToTextClient(WebSocketClient):
 
@@ -28,7 +30,8 @@ class SpeechToTextClient(WebSocketClient):
         MessageFactory.connectionEstablished()
         self.sendConfigMessage()
         self.speechToText = SpeechToTextModule("SpeechToText", session, self)
-        self.serviceid = session.registerService("SpeechToText", self.speechToText)
+        global serviceid
+        serviceid = session.registerService("SpeechToText", self.speechToText)
         self.speechToText.startStreaming()
 
     def sendConfigMessage(self):
@@ -42,7 +45,7 @@ class SpeechToTextClient(WebSocketClient):
         MessageFactory.saveMessage(message)
         if "turn.end" in MessageFactory.receivedMessages.keys():
             print "restarting..."
-            session.unregisterService(self.serviceid)
+            session.unregisterService(serviceid)
             self.speechToText.stopStreaming()
             self.sendTelemetryMessage()
             MessageFactory.receivedMessages = {}
@@ -53,6 +56,7 @@ class SpeechToTextClient(WebSocketClient):
             result = json.loads(MessageFactory.getMessageContent(message))
             if result["RecognitionStatus"] == "Success":
                 print result["DisplayText"]
+                textToAnswerClient.answerText(result["DisplayText"])
 
         if MessageFactory.getMessageType(message) == MessageFactory.MESSAGE_TYPE_HYPOTHESIS:
             result = json.loads(MessageFactory.getMessageContent(message))
@@ -80,14 +84,12 @@ class SpeechToTextModule():
         self.ALAudioDevice.setClientPreferences(self.name, 16000, 3, 0)
         self.ALAudioDevice.subscribe(self.name)
         self.sentFirstChunk = False
-        print("stream started!")
 
     def stopStreaming(self):
         """ Interrupt recognition """
         self.lock.acquire()
         self.isProcessingDone = True
         self.lock.release()
-        print("stream stopped!")
 
     def processRemote(self, nbOfChannels, nbOfSamplesByChannel, timestamp, inputBuffer):
         """ This is the callback that receives the audio buffers """
@@ -111,8 +113,15 @@ def startWebsocket():
     ws.connect()
     ws.run_forever()
 
-
 qiapp = qi.Application(sys.argv)
 qiapp.start()
 session = qiapp.session
-startWebsocket()
+
+try:
+    textToSpeechService = session.service("ALTextToSpeech")
+    textToAnswerClient = TextToAnswerClient.TextToAnswerClient(textToSpeechService)
+    startWebsocket()
+except KeyboardInterrupt:
+    session.unregisterService(serviceid)
+    session.close()
+    print "interrupted"
