@@ -4,7 +4,6 @@ import uuid
 import MessageFactory
 import json
 import qi
-import time
 from threading import Lock
 import sys
 
@@ -29,7 +28,7 @@ class SpeechToTextClient(WebSocketClient):
         MessageFactory.connectionEstablished()
         self.sendConfigMessage()
         self.speechToText = SpeechToTextModule("SpeechToText", session, self)
-        session.registerService("SpeechToText", self.speechToText)
+        self.serviceid = session.registerService("SpeechToText", self.speechToText)
         self.speechToText.startStreaming()
 
     def sendConfigMessage(self):
@@ -39,11 +38,11 @@ class SpeechToTextClient(WebSocketClient):
         self.send(MessageFactory.createTelemetryMessage())
 
     def received_message(self, message):
-        print str(message)
         self.parseAndOutputResult(message)
         MessageFactory.saveMessage(message)
         if "turn.end" in MessageFactory.receivedMessages.keys():
             print "restarting..."
+            session.unregisterService(self.serviceid)
             self.speechToText.stopStreaming()
             self.sendTelemetryMessage()
             MessageFactory.receivedMessages = {}
@@ -81,20 +80,17 @@ class SpeechToTextModule():
         self.ALAudioDevice.setClientPreferences(self.name, 16000, 3, 0)
         self.ALAudioDevice.subscribe(self.name)
         self.sentFirstChunk = False
-        while self.isProcessingDone == False:
-            time.sleep(0.1)
-        self.ALAudioDevice.unsubscribe(self.name)
-        self.isProcessingDone = False
+        print("stream started!")
 
     def stopStreaming(self):
         """ Interrupt recognition """
         self.lock.acquire()
         self.isProcessingDone = True
         self.lock.release()
+        print("stream stopped!")
 
     def processRemote(self, nbOfChannels, nbOfSamplesByChannel, timestamp, inputBuffer):
         """ This is the callback that receives the audio buffers """
-        print len(inputBuffer)
         message = MessageFactory.createAudioHeader()
 
         if not self.sentFirstChunk:
